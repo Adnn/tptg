@@ -2,7 +2,7 @@
 // Polycode template. Write your code here.
 //
 
-#import <PolycodeView.h>
+#include <PolycodeView.h>
 #include <Polycode.h>
 
 #import <TeaPartyLib/Game.h>
