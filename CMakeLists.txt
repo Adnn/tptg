@@ -102,6 +102,7 @@ include (cmc-macros)
 #endif(APPLE)
 
 find_package(Polycode)
+find_package(aunteater)
 
 # Directory where custom headers are exported.
 # It is notably where ${libname}_Export.h files will be exported for DLL libraries,

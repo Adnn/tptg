@@ -1,3 +1,1 @@
-
-# TODO : add the subdirectories to compile
-#add_subdirectory(__)
+conditional_add_subdirectory(TeaPartyLib DEPENDS aunteater)

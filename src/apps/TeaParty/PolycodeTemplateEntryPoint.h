@@ -14,4 +14,5 @@ public:
     
 private:
     Polycode::Core *core;
+    Polycode::Scene *mScene;
 };

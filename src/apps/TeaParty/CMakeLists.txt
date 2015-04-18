@@ -59,7 +59,7 @@ add_executable(${PROJECT_NAME}
 include_directories(${Polycode_INCLUDE_DIR} ${Polycode_VIEW_DIR} ${Polycode_DEPENDENCIES_INCLUDE_DIR})
 
 target_link_libraries(${PROJECT_NAME}
-    ${Polycode_LIBRARIES}
+    TeaPartyLib
 )
 
 ######################################################################
