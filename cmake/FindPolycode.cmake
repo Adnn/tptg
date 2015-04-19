@@ -51,7 +51,7 @@ find_path(Polycode_VIEW_DIR PolycodeView.h
 )
 
 find_library(Polycode_LIBRARY 
-    NAMES libPolycore Polycore
+    NAMES libPolycore Polycore_d
 )
 
 ##

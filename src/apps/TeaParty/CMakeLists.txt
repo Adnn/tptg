@@ -5,18 +5,10 @@ project(TeaParty)
 ##
 set(${PROJECT_NAME}_HEADERS
     PolycodeTemplateEntryPoint.h
-    Components/ActionController.h
-    Components/Keyboard.h
-    Components/Position.h
-    Systems/KeyboardController.h
 )
 
 set(${PROJECT_NAME}_SOURCES
     PolycodeTemplateEntryPoint.cpp
-    Components/ActionController.cpp
-    Components/Keyboard.cpp
-    Components/Position.cpp
-    Systems/KeyboardController.cpp
 )
 
 ##

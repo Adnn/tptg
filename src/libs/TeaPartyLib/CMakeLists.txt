@@ -13,14 +13,30 @@ set(${PROJECT_NAME}_HEADERS
     ${CMAKE_BINARY_DIR}/include/${PROJECT_NAME}_Export.h
     Components/Position.h
     Game.h
+<<<<<<< HEAD
     Systems/Display.h
+=======
+    SystemRender.h
+    Components/ActionController.h
+    Components/Keyboard.h
+    Components/Position.h
+    Systems/KeyboardController.h
+>>>>>>> commit comment L0L
 )
 
 # TODO : list .cpp files here
 set(${PROJECT_NAME}_SOURCES
     Components/Position.cpp
     Game.cpp
+<<<<<<< HEAD
     Systems/Display.cpp
+=======
+    SystemRender.cpp
+    Components/ActionController.cpp
+    Components/Keyboard.cpp
+    Components/Position.cpp
+    Systems/KeyboardController.cpp
+>>>>>>> commit comment L0L
 )
 
 add_library(${PROJECT_NAME}
@@ -28,6 +44,7 @@ add_library(${PROJECT_NAME}
     ${${PROJECT_NAME}_HEADERS}
 )
 
+include_directories(${Polycode_INCLUDE_DIR} ${Polycode_VIEW_DIR} ${Polycode_DEPENDENCIES_INCLUDE_DIR})
 ## Adds the library headers themselves to the interface include directory
 target_include_directories(${PROJECT_NAME} INTERFACE 
                            $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>

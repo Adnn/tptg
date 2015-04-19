@@ -1,4 +1,4 @@
-#include "KeyboardControl.h"
+#include "KeyboardController.h"
 
 #include "../Components/Keyboard.h"
 #include "../Components/ActionController.h"
@@ -18,7 +18,7 @@ const ArchetypeTypeSet NodeKeyboardActionController::gComponentTypes =
       &typeid(ComponentActionController) };
 
 SystemKeyboardControl::SystemKeyboardControl(aunteater::Engine &aEngine) :
-    mKeyboardActionControllers(aEngine.getNodes<NodeKeyboardActionController>()),
+    mKeyboardActionControllers(&aEngine.getNodes<NodeKeyboardActionController>()),
     mEngine(aEngine)
 {
     mEngine.addSystem(this);
@@ -46,7 +46,7 @@ void SystemKeyboardControl::update(float time)
 {
     Polycode::CoreInput * keyboard = Polycode::CoreServices::getInstance()->getCore()->getInput();
 
-    for (auto & keyboardActionCtrl : mKeyboardActionControllers)
+    for (auto & keyboardActionCtrl : *mKeyboardActionControllers)
     {
         ComponentActionController & actionController =
             keyboardActionCtrl.get<ComponentActionController>();
