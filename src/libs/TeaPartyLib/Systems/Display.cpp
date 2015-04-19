@@ -36,7 +36,12 @@ void Display::addedToEngine(Engine &aEngine)
 
 void Display::update(double aTime)
 {
-
+    for (aunteater::Node node : *mRenderables)
+    {
+        auto sceneSprite = node.get<Component::Sprite>().polySprite;
+        const Vec2 pos = node.get<Component::Position>().coords;
+        sceneSprite->setPosition(pos.x,pos.y);
+    }
 }
 
 void Display::addedNode(aunteater::Node &aNode)

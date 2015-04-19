@@ -32,18 +32,18 @@ void Input::update(double time)
 	Polycode::CoreInput * keyboard = Polycode::CoreServices::getInstance()->getCore()->getInput();
 	for (aunteater::Node node : *mNodeList)
 	{
-		auto speed = node.get<Component::Speed>();
+		auto speed = &node.get<Component::Speed>();
 		if (keyboard->getKeyState(Polycode::KEY_LEFT))
 		{
-			speed.vX = -BASE_SPEED;
+			speed->vX = -BASE_SPEED;
 		}
 		else if (keyboard->getKeyState(Polycode::KEY_RIGHT))
 		{
-			speed.vX = BASE_SPEED;
+			speed->vX = BASE_SPEED;
 		}
 		else
 		{
-			speed.vX = 0;
+			speed->vX = 0;
 		}
 	}
 }

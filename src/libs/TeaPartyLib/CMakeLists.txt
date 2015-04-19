@@ -17,6 +17,7 @@ set(${PROJECT_NAME}_HEADERS
     Systems/Display.h
     Systems/Input.h
     Systems/KeyboardController.h
+    Systems/Move.h
     Components/ActionController.h
     Components/Keyboard.h
     Components/Position.h
@@ -29,6 +30,7 @@ set(${PROJECT_NAME}_SOURCES
     Systems/Display.cpp
     Systems/KeyboardController.cpp
     Systems/Input.cpp
+    Systems/Move.cpp
 )
 
 add_library(${PROJECT_NAME}
