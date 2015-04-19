@@ -2,6 +2,7 @@
 
 #include "Level.h"
 
+#include "Components/AnimationList.h"
 #include "Components/Keyboard.h"
 #include "Components/Image.h"
 #include "Components/PlayerReference.h"
@@ -13,6 +14,7 @@
 #include "Systems/Input.h"
 #include "Systems/Move.h"
 #include "Systems/KeyboardController.h"
+#include "Systems/AnimationDispatcher.h"
 
 #include <ResourcesPath.h>
 
@@ -36,7 +38,6 @@ using namespace TeaParty;
     )#";
 
 
-
 Game::Game() :
     mEngine(new aunteater::Engine)
 {
@@ -51,19 +52,29 @@ Game::Game() :
     STFU(Input);
     STFU(Move)
     STFU1(CameraController, mLevel.get())
+    STFU(AnimationDispatcher);
+
+    mAnimations.push_back(std::make_unique<Structure::Animation>("run_left",2,30.0f));
+    mAnimations.push_back(std::make_unique<Structure::Animation>("run_right",2,30.0f));
+    mAnimations.push_back(std::make_unique<Structure::Animation>("idle",0,30.0f));
 
     aunteater::Entity sprite;
-    sprite.addComponent<Component::Sprite>(new Polycode::SpriteSet("explosion.xml"));
-    sprite.addComponent<Component::Position>(200, 0);
-	sprite.addComponent<Component::Speed>();
-	sprite.addComponent<Component::Keyboard>();
+
+    sprite.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.xml"));
+    sprite.addComponent<Component::Position>(150, -50);
+    sprite.addComponent<Component::Speed>();
+    sprite.addComponent<Component::Keyboard>();
+    sprite.addComponent<Component::AnimationList>("idle");
+    
+    sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
+    sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
+    sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
     mEngine->addEntity("player", sprite);
 
     aunteater::Entity camera;
     camera.addComponent<Component::Position>(0., 0);
     camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player"));
     mEngine->addEntity("camera", camera);
-
 }
 
 Game::~Game()

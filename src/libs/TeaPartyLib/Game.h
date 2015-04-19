@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <vector>
+#include "Animation.h"
 
 namespace aunteater
 {
@@ -35,6 +36,7 @@ private:
     std::unique_ptr<aunteater::Engine> mEngine;
     std::vector<std::unique_ptr<aunteater::System> > mSystems;
     std::unique_ptr<Level> mLevel;
+    std::vector<std::unique_ptr<Structure::Animation> > mAnimations;
 };
 
 } // namespace TeaParty

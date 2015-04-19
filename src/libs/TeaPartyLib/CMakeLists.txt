@@ -21,13 +21,20 @@ set(${PROJECT_NAME}_HEADERS
     Components/Sprite.h
     Game.h
     Level.h
+    Animation.h
+    Vec2.h
+    globals.h
     Systems/CameraController.h
     Systems/Display.h
     Systems/Input.h
     Systems/KeyboardController.h
     Systems/Move.h
-    Vec2.h
-    globals.h
+    Systems/AnimationDispatcher.h
+    Components/ActionController.h
+    Components/Keyboard.h
+    Components/Position.h
+    Components/Speed.h
+    Components/AnimationList.h
 )
 
 # TODO : list .cpp files here
@@ -41,6 +48,7 @@ set(${PROJECT_NAME}_SOURCES
     Systems/Input.cpp
     Systems/KeyboardController.cpp
     Systems/Move.cpp
+    Systems/AnimationDispatcher.cpp
 )
 
 add_library(${PROJECT_NAME}
