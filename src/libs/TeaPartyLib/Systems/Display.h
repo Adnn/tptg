@@ -15,6 +15,20 @@
 
 namespace TeaParty { namespace System {
 
+class ImageObserver : public aunteater::FamilyObserver
+{
+public:
+    ImageObserver(Polycode::Scene &aScene) :
+            mScene(aScene)
+    {}
+
+    virtual void addedNode(aunteater::Node &aNode) override;
+    virtual void removedNode(aunteater::Node &aNode) override;
+    
+private:
+    Polycode::Scene &mScene;
+};
+
 class Display : public aunteater::System, public aunteater::FamilyObserver
 {
 public:
@@ -29,6 +43,7 @@ public:
 private:
     aunteater::Nodes mRenderables;
     Polycode::Scene mScene;
+    ImageObserver mImageObserver = ImageObserver(mScene);
 };
 
 }} // namespace TeaParty::System

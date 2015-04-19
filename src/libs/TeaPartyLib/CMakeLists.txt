@@ -11,7 +11,9 @@ configure_file(${CMAKE_SOURCE_DIR}/cmake/Export.h.in
 # Helpful windows command : dir /b /oen
 set(${PROJECT_NAME}_HEADERS
     ${CMAKE_BINARY_DIR}/include/${PROJECT_NAME}_Export.h
+    Components/Image.h
     Components/Position.h
+    Components/Sprite.h
     Game.h
     Systems/Display.h
 )
