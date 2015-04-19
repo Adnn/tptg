@@ -5,7 +5,7 @@
 #include <PolycodeView.h>
 #include <Polycode.h>
 
-#import <TeaPartyLib/Game.h>
+#include <TeaPartyLib/Game.h>
 
 class PolycodeTemplateEntryPoint {
 public:

@@ -14,6 +14,11 @@ namespace TeaParty {
 
 struct Vec2
 {
+    Vec2(double x, double y):
+        x(x),
+        y(y)
+    {}
+
     Vec2 operator+(const Vec2 &aRhs) const
     {
         return {x+aRhs.x, y+aRhs.y};

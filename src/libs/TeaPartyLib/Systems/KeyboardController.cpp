@@ -6,6 +6,8 @@
 #include <Polycode.h>
 
 using namespace aunteater;
+using namespace TeaParty;
+using namespace System;
 
 class NodeKeyboardActionController
 {
@@ -14,42 +16,41 @@ public:
 };
 
 const ArchetypeTypeSet NodeKeyboardActionController::gComponentTypes =
-    { &typeid(ComponentKeyboard),
-      &typeid(ComponentActionController) };
+    { &typeid(TeaParty::Component::Keyboard),
+      &typeid(TeaParty::Component::ActionController) };
 
-SystemKeyboardControl::SystemKeyboardControl(aunteater::Engine &aEngine) :
-    mKeyboardActionControllers(&aEngine.getNodes<NodeKeyboardActionController>()),
-    mEngine(aEngine)
+KeyboardController::KeyboardController()
 {
-    mEngine.addSystem(this);
 }
 
-void SystemKeyboardControl::addedToEngine(aunteater::Engine &aEngine)
-{}
+void KeyboardController::addedToEngine(aunteater::Engine &aEngine)
+{
+    mKeyboardActionControllers = &aEngine.getNodes<NodeKeyboardActionController>();
+}
 
 void buttonUpdate(Polycode::CoreInput *aKeyboard,
-                  input_state &aButton, Polycode::PolyKEY aKey)
+                  TeaParty::Component::input_state &aButton, Polycode::PolyKEY aKey)
 {
     if(aKeyboard->getKeyState(aKey))
     {
         aButton = isDown(aButton) ?
-                  input_state::BUTTON_DOWN : input_state::BUTTON_FALLING_EDGE;
+                  TeaParty::Component::input_state::BUTTON_DOWN : TeaParty::Component::input_state::BUTTON_FALLING_EDGE;
     }
     else
     {
         aButton = isUp(aButton) ?
-                  input_state::BUTTON_UP : input_state::BUTTON_RISING_EDGE;
+                  TeaParty::Component::input_state::BUTTON_UP : TeaParty::Component::input_state::BUTTON_RISING_EDGE;
     }
 }
 
-void SystemKeyboardControl::update(float time)
+void KeyboardController::update(double time)
 {
     Polycode::CoreInput * keyboard = Polycode::CoreServices::getInstance()->getCore()->getInput();
 
     for (auto & keyboardActionCtrl : *mKeyboardActionControllers)
     {
-        ComponentActionController & actionController =
-            keyboardActionCtrl.get<ComponentActionController>();
+        Component::ActionController & actionController =
+            keyboardActionCtrl.get<Component::ActionController>();
 
         buttonUpdate(keyboard, actionController.up, Polycode::KEY_UP);
         buttonUpdate(keyboard, actionController.down, Polycode::KEY_DOWN);

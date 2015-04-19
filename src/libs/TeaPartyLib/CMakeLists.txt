@@ -13,30 +13,22 @@ set(${PROJECT_NAME}_HEADERS
     ${CMAKE_BINARY_DIR}/include/${PROJECT_NAME}_Export.h
     Components/Position.h
     Game.h
-<<<<<<< HEAD
+    Vec2.h
     Systems/Display.h
-=======
-    SystemRender.h
+    Systems/Input.h
+    Systems/KeyboardController.h
     Components/ActionController.h
     Components/Keyboard.h
     Components/Position.h
-    Systems/KeyboardController.h
->>>>>>> commit comment L0L
+    Components/Speed.h
 )
 
 # TODO : list .cpp files here
 set(${PROJECT_NAME}_SOURCES
-    Components/Position.cpp
     Game.cpp
-<<<<<<< HEAD
     Systems/Display.cpp
-=======
-    SystemRender.cpp
-    Components/ActionController.cpp
-    Components/Keyboard.cpp
-    Components/Position.cpp
     Systems/KeyboardController.cpp
->>>>>>> commit comment L0L
+    Systems/Input.cpp
 )
 
 add_library(${PROJECT_NAME}

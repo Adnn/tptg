@@ -13,16 +13,14 @@
 #include <aunteater/Component.h>
 #include <memory>
 
-class ComponentKeyboard : public aunteater::Component
+namespace TeaParty { namespace Component {
+class Keyboard : public aunteater::Component
 {
 public:
-	ComponentKeyboard() : aunteater::Component()
+	Keyboard()
 	{}
-
-	const std::type_info & getTypeInfo()
-	{
-		return typeid(*this);
-	}
+private:
+    COMP_CLONE(Keyboard)
 };
-
+}}
 #endif /* defined(__aunteater__ComponentKeyboard__) */

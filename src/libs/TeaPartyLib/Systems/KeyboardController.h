@@ -4,17 +4,19 @@
 #include <aunteater/System.h>
 #include <aunteater/Engine.h>
 
-class SystemKeyboardControl : public aunteater::System
+namespace TeaParty { namespace System {
+	class KeyboardController : public aunteater::System
 {
 public:
-    SystemKeyboardControl(aunteater::Engine &aEngine);
+    KeyboardController();
 
     virtual void addedToEngine(aunteater::Engine &aEngine);
-    virtual void update(float time);
+    virtual void update(double time);
 
 private:
     aunteater::Nodes mKeyboardActionControllers;
-    aunteater::Engine & mEngine;
 };
+
+}}
 
 #endif  // #ifdef
