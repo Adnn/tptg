@@ -11,14 +11,16 @@ configure_file(${CMAKE_SOURCE_DIR}/cmake/Export.h.in
 # Helpful windows command : dir /b /oen
 set(${PROJECT_NAME}_HEADERS
     ${CMAKE_BINARY_DIR}/include/${PROJECT_NAME}_Export.h
+    Components/Position.h
     Game.h
-    SystemRender.h
+    Systems/Display.h
 )
 
 # TODO : list .cpp files here
 set(${PROJECT_NAME}_SOURCES
+    Components/Position.cpp
     Game.cpp
-    SystemRender.cpp
+    Systems/Display.cpp
 )
 
 add_library(${PROJECT_NAME}
@@ -33,6 +35,8 @@ target_include_directories(${PROJECT_NAME} INTERFACE
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
+    ${Polycode_INCLUDE_DIR}
+    ${Polycode_DEPENDENCIES_INCLUDE_DIR}
 )
 
 target_link_libraries(${PROJECT_NAME}

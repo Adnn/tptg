@@ -8,19 +8,29 @@
 #ifndef teaparty_Game_h
 #define teaparty_Game_h
 
-#include <aunteater/Engine.h>
+#include <memory>
+#include <vector>
 
-namespace teaparty {
+namespace aunteater
+{
+    class Engine;
+    class System;
+}
+
+namespace TeaParty {
 
 class Game
 {
 public:
     Game();
+    ~Game();
+    void update();
 
 private:
-    aunteater::Engine mEngine;
+    std::unique_ptr<aunteater::Engine> mEngine;
+    std::vector<std::unique_ptr<aunteater::System> > mSystems;
 };
 
-} // namespace teaparty
+} // namespace TeaParty
 
 #endif

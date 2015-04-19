@@ -5,6 +5,8 @@
 #import <PolycodeView.h>
 #include <Polycode.h>
 
+#import <TeaPartyLib/Game.h>
+
 class PolycodeTemplateEntryPoint {
 public:
     PolycodeTemplateEntryPoint(PolycodeView *view);
@@ -14,5 +16,6 @@ public:
     
 private:
     Polycode::Core *core;
-    Polycode::Scene *mScene;
+    TeaParty::Game mGame;
+    //Polycode::Scene *mScene;
 };
