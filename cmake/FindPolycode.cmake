@@ -51,7 +51,7 @@ find_path(Polycode_VIEW_DIR PolycodeView.h
 )
 
 find_library(Polycode_LIBRARY 
-    NAMES libPolycore Polycore
+    NAMES libPolycore Polycore_d
 )
 
 ##
@@ -64,6 +64,13 @@ find_path(Polycode_DEPENDENCIES_INCLUDE_DIR
     NO_SYSTEM_ENVIRONMENT_PATH
     NO_CMAKE_SYSTEM_PATH
 )
+
+if(Polycode_DEPENDENCIES_INCLUDE_DIR)
+    LIST(APPEND Polycode_DEPENDENCIES_INCLUDE_DIR ${OPENAL_INCLUDE_DIR})
+    message(${Polycode_DEPENDENCIES_INCLUDE_DIR})
+endif()
+
+
 
 # Gives a better chance not to catch the system wide installations of the dependencies
 # when Polycode installation dir has not yet been correctly set
@@ -97,7 +104,11 @@ if(APPLE)
     find_library(OPENAL_LIBRARY OpenAL)
     mark_as_advanced(COCOA_LIBRARY OPENGL_LIBRARY IOKIT_LIBRARY OPENAL_LIBRARY)
     set(EXTRA_LIBRARIES ${COCOA_LIBRARY} ${OPENGL_LIBRARY} ${IOKIT_LIBRARY} ${OPENAL_LIBRARY})
-endif(APPLE) 
+endif(APPLE)
+
+if(WIN32)
+    set(EXTRA_LIBRARIES winmm.lib ws2_32.lib)
+endif(WIN32)
 
 ##  
 ## handle the QUIETLY and REQUIRED arguments and set Polycode_FOUND to TRUE if 
@@ -122,6 +133,7 @@ IF(POLYCODE_FOUND)
 
         ${EXTRA_LIBRARIES}
 )
+
 ELSE(POLYCODE_FOUND)
     SET( Polycode_LIBRARIES )
 ENDIF(POLYCODE_FOUND)

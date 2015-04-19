@@ -47,7 +47,14 @@ if(APPLE)
 endif(APPLE)
 # TODO: Linux and Windows platforms
 
-add_executable(${PROJECT_NAME}
+if(WIN32)
+    list(APPEND ${PROJECT_NAME}_SOURCES
+        TeaPartyWinMain.cpp
+        ${Polycode_VIEW_DIR}/PolycodeView.cpp
+    )
+endif(WIN32)
+
+add_executable(${PROJECT_NAME} WIN32
     # I do not know if it is a good idea to show the template in the IDE ?
     #${${PROJECT_NAME}_SUPPORT}
     ${${PROJECT_NAME}_SOURCES}
@@ -70,7 +77,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
         SOVERSION "${SOVERSION}"
         # TODO: It would be nice to be able to just use an existing plist, instead of compulsorily 'configuring' it
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}-Info.plist.in"
-        RESOURCE ${${PROJECT_NAME}_RESOURCES}
+        RESOURCE "${${PROJECT_NAME}_RESOURCES}"
 )
 
 

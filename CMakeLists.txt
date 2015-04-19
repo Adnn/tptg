@@ -145,6 +145,10 @@ if(BUILD_WITH_C++14_SUPPORT)
     endif ()
 endif(BUILD_WITH_C++14_SUPPORT)
 
+if(WIN32)
+  add_definitions(-D_UNICODE)
+endif(WIN32)
+
 
 ## #################################################################
 ## Add targets
