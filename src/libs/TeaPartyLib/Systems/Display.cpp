@@ -48,10 +48,10 @@ void Display::addedNode(aunteater::Node &aNode)
 {
     auto sceneSprite = aNode.get<Component::Sprite>().polySprite;
     mScene.addChild(sceneSprite.get());
-    sceneSprite->setSpriteByName("Explosion");
-    sceneSprite->setSpriteStateByName("default", 0, false);
+    sceneSprite->setSpriteByName("player");
     const Vec2 pos = aNode.get<Component::Position>().coords;
     sceneSprite->setPosition(pos.x, pos.y);
+    sceneSprite->setScale(1.2,1.2);
 }
 
 void Display::removedNode(aunteater::Node &aNode)

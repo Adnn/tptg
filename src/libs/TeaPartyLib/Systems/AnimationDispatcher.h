@@ -1,0 +1,33 @@
+//
+//  AnimationDispatcher.h
+//
+//  Created by FranzP.
+//
+//
+
+#ifndef System_AnimationDispatcher_h
+#define System_AnimationDispatcher_h
+
+#include <Polycode.h>
+
+#include <aunteater/System.h>
+#include <aunteater/Family.h>
+
+namespace TeaParty { namespace System {
+
+class AnimationDispatcher : public aunteater::System
+{
+public:
+    AnimationDispatcher()
+    {}
+
+    virtual void addedToEngine(aunteater::Engine &aEngine);
+    virtual void update(double aTime);
+    
+private:
+    aunteater::Nodes mAnimationables;
+};
+
+}} // namespace TeaParty::System
+
+#endif

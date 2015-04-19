@@ -17,7 +17,7 @@
 
 #include <list>
 
-#define BASE_SPEED 3.0
+#define BASE_SPEED 10.0
 
 #include <set>
 #include <typeinfo>
