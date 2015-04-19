@@ -4,6 +4,8 @@
 #include "Components/Sprite.h"
 #include "Systems/Display.h"
 
+#include <ResourcesPath.h>
+
 #include <aunteater/Engine.h>
 
 using namespace TeaParty;
@@ -14,12 +16,12 @@ Game::Game() :
     mSystems.push_back(std::make_unique<System::Display>());
     mEngine->addSystem(mSystems.back().get());
 
+
+    Polycode::CoreServices::getInstance()->getResourceManager()->addArchive(gResourcesRoot+"/Archive.zip");
     aunteater::Entity sprite;
-    sprite.addComponent<Component::Sprite>(
-        new Polycode::SpriteSet("/Users/adn/Desktop/sprite_set.xml"));
+    sprite.addComponent<Component::Sprite>(new Polycode::SpriteSet("explosion.xml"));
     sprite.addComponent<Component::Position>(10, 10);
     mEngine->addEntity(sprite);
-
 }
 
 Game::~Game()

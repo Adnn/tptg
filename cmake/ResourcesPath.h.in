@@ -1,0 +1,9 @@
+#ifndef Resources_Path_Conf_h
+#define Resources_Path_Conf_h
+
+#include <string>
+
+static const std::string gResourcesRoot = "@resource_path@";
+
+#endif
+

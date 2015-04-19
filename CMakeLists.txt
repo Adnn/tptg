@@ -92,6 +92,15 @@ include (cmc-macros)
 
 
 ## #################################################################
+## Setup resources
+## #################################################################
+set(resource_path ${CMAKE_SOURCE_DIR}/resources)
+configure_file(${CMAKE_SOURCE_DIR}/cmake/ResourcesPath.h.in ${CMAKE_BINARY_DIR}/config/ResourcesPath.h @ONLY)
+
+# The config directory should be added as a include-searchpath, do it globally
+include_directories( ${CMAKE_BINARY_DIR}/config/ )
+
+## #################################################################
 ## Resolve dependencies
 ## #################################################################
 #if(APPLE)
