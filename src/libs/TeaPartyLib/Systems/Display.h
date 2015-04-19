@@ -42,6 +42,7 @@ public:
     
 private:
     aunteater::Nodes mRenderables;
+    aunteater::Nodes mCameras;
     Polycode::Scene mScene;
     ImageObserver mImageObserver = ImageObserver(mScene);
 };

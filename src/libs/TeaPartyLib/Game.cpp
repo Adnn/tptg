@@ -1,10 +1,14 @@
 #include "Game.h"
 
+#include "Level.h"
+
+#include "Components/Keyboard.h"
 #include "Components/Image.h"
+#include "Components/PlayerReference.h"
 #include "Components/Position.h"
 #include "Components/Sprite.h"
-#include "Components/Keyboard.h"
 #include "Components/Speed.h"
+#include "Systems/CameraController.h"
 #include "Systems/Display.h"
 #include "Systems/Input.h"
 #include "Systems/Move.h"
@@ -20,40 +24,55 @@ using namespace TeaParty;
     mSystems.push_back(std::make_unique<System:: systemType>()); \
     mEngine->addSystem(mSystems.back().get());
 
+#define STFU1(systemType, arg_1) \
+    mSystems.push_back(std::make_unique<System:: systemType>(arg_1)); \
+    mEngine->addSystem(mSystems.back().get());
+
+    const std::string gLevelDefinition = R"#(
+        room_red.png
+        room_brown.png
+        room_double_mandala.png
+        room_green.png
+    )#";
+
+
+
 Game::Game() :
     mEngine(new aunteater::Engine)
 {
-	STFU(Display);
-	STFU(KeyboardController);
-	STFU(Input);
-	STFU(Move)
-
     Polycode::CoreServices::getInstance()->getResourceManager()->addArchive(gResourcesRoot+"/Archive.zip");
 
-    constexpr double ROOM_WIDTH = 960/2;
+    std::istringstream defStream(gLevelDefinition);
+    mLevel = std::make_unique<Level>(defStream, *mEngine);
+    //initLevel();
 
-    aunteater::Entity room_0_0;
-    room_0_0.addComponent<Component::Image>("room_red.png");
-    room_0_0.addComponent<Component::Position>(0, 0);
-    mEngine->addEntity(room_0_0);
-
-    aunteater::Entity room_0_1;
-    room_0_1.addComponent<Component::Image>("room_brown.png");
-    room_0_1.addComponent<Component::Position>(ROOM_WIDTH, 0);
-    mEngine->addEntity(room_0_1);
+    STFU(Display);
+    STFU(KeyboardController);
+    STFU(Input);
+    STFU(Move)
+    STFU1(CameraController, mLevel.get())
 
     aunteater::Entity sprite;
     sprite.addComponent<Component::Sprite>(new Polycode::SpriteSet("explosion.xml"));
-    sprite.addComponent<Component::Position>(10, 10);
+    sprite.addComponent<Component::Position>(200, 0);
 	sprite.addComponent<Component::Speed>();
 	sprite.addComponent<Component::Keyboard>();
-    mEngine->addEntity(sprite);
+    mEngine->addEntity("player", sprite);
+
+    aunteater::Entity camera;
+    camera.addComponent<Component::Position>(0., 0);
+    camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player"));
+    mEngine->addEntity("camera", camera);
 
 }
 
 Game::~Game()
 {
 
+}
+
+void Game::initLevel()
+{
 }
 
 void Game::update()

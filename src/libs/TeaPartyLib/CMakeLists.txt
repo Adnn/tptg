@@ -11,27 +11,35 @@ configure_file(${CMAKE_SOURCE_DIR}/cmake/Export.h.in
 # Helpful windows command : dir /b /oen
 set(${PROJECT_NAME}_HEADERS
     ${CMAKE_BINARY_DIR}/include/${PROJECT_NAME}_Export.h
+    Archetypes/NodeCamera.h
+    Components/ActionController.h
     Components/Image.h
+    Components/Keyboard.h
+    Components/PlayerReference.h
     Components/Position.h
+    Components/Speed.h
     Components/Sprite.h
     Game.h
-    Vec2.h
+    Level.h
+    Systems/CameraController.h
     Systems/Display.h
     Systems/Input.h
     Systems/KeyboardController.h
     Systems/Move.h
-    Components/ActionController.h
-    Components/Keyboard.h
-    Components/Position.h
-    Components/Speed.h
+    Vec2.h
+    globals.h
 )
 
 # TODO : list .cpp files here
 set(${PROJECT_NAME}_SOURCES
+    Archetypes/NodeCamera.cpp
+    Components/PlayerReference.cpp
     Game.cpp
+    Level.cpp
+    Systems/CameraController.cpp
     Systems/Display.cpp
-    Systems/KeyboardController.cpp
     Systems/Input.cpp
+    Systems/KeyboardController.cpp
     Systems/Move.cpp
 )
 

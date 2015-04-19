@@ -19,6 +19,8 @@ namespace aunteater
 
 namespace TeaParty {
 
+class Level;
+
 class Game
 {
 public:
@@ -27,8 +29,12 @@ public:
     void update();
 
 private:
+    void initLevel();
+
+private:
     std::unique_ptr<aunteater::Engine> mEngine;
     std::vector<std::unique_ptr<aunteater::System> > mSystems;
+    std::unique_ptr<Level> mLevel;
 };
 
 } // namespace TeaParty

@@ -1,5 +1,9 @@
 #include "Display.h"
 
+#include "../globals.h"
+
+#include "../Archetypes/NodeCamera.h"
+
 #include "../Components/Image.h"
 #include "../Components/Position.h"
 #include "../Components/Sprite.h"
@@ -7,6 +11,7 @@
 #include <aunteater/Engine.h>
 
 using namespace TeaParty;
+using namespace Archetype;
 using namespace System;
 using aunteater::ArchetypeTypeSet;
 using aunteater::Engine;
@@ -39,7 +44,7 @@ void ImageObserver::addedNode(aunteater::Node &aNode)
     mScene.addChild(sceneElem.get());
     const Vec2 pos = aNode.get<Component::Position>().coords;
     sceneElem->setPosition(pos.x, pos.y);
-//    sceneElem->setScale(2, 2);
+    //sceneElem->setScale(4, 2);
 }
 
 void ImageObserver::removedNode(aunteater::Node &aNode)
@@ -50,13 +55,15 @@ void ImageObserver::removedNode(aunteater::Node &aNode)
 Display::Display() :
     mScene(Polycode::Scene::SCENE_2D)
 {
-    mScene.getActiveCamera()->setOrthoSize(960, 540);
+    mScene.getActiveCamera()->setProjectionMode(Polycode::Camera::ORTHO_SIZE_LOCK_WIDTH);
+    mScene.getActiveCamera()->setOrthoSize(CAM_WIDTH, 540);
 	Polycode::CoreServices::getInstance()->getRenderer()->setTextureFilteringMode(Polycode::Renderer::TEX_FILTERING_NEAREST);
 }
 
 void Display::addedToEngine(Engine &aEngine)
 {
     mRenderables = &aEngine.getNodes<NodeRenderable>();
+    mCameras = &aEngine.getNodes<NodeCamera>();
     aEngine.registerToNodes<NodeRenderable>(this);
     aEngine.registerToNodes<NodeImage>(&mImageObserver);
 }
@@ -68,6 +75,12 @@ void Display::update(double aTime)
         auto sceneSprite = node.get<Component::Sprite>().polySprite;
         const Vec2 pos = node.get<Component::Position>().coords;
         sceneSprite->setPosition(pos.x,pos.y);
+    }
+
+    for (aunteater::Node node : *mCameras)
+    {
+        const Vec2 pos = node.get<Component::Position>().coords;
+        mScene.getActiveCamera()->setPosition(pos.x, pos.y);
     }
 }
 
