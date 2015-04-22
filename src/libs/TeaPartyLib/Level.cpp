@@ -1,8 +1,11 @@
 #include "Level.h"
 
+#include "Components/CallbackOnActor.h"
 #include "Components/Extent.h"
 #include "Components/Image.h"
 #include "Components/Position.h"
+#include "Components/Static.h"
+#include "Components/TriggeringAction.h"
 
 #include "globals.h"
 
@@ -15,8 +18,20 @@ void makeWall(double aPosition, aunteater::Engine &aEngine)
     aunteater::Entity wall;
     wall.addComponent<Component::Extent>(WALL_EXTENT, WALL_EXTENT);
     wall.addComponent<Component::Position>(aPosition, 0);
+    wall.addComponent<Component::Static>();
     aEngine.addEntity(wall);
 
+}
+
+void makePortal(double aPosition, double aOutputPosition, aunteater::Engine &aEngine)
+{
+    aunteater::Entity doorPortal;
+    doorPortal.addComponent<Component::CallbackOnActor>([aOutputPosition](aunteater::Node &aActor)
+                                                        {aActor.get<Component::Position>().coords.x = aOutputPosition;});
+    doorPortal.addComponent<Component::TriggeringAction>(Component::Action::A);
+    doorPortal.addComponent<Component::Position>(aPosition, 0);
+    doorPortal.addComponent<Component::Extent>(PORTAL_EXTENT, PORTAL_EXTENT);
+    aEngine.addEntity(doorPortal);
 }
 
 Level::Level(std::istream &aDefinitionStream, aunteater::Engine &aEngine)
@@ -35,6 +50,11 @@ Level::Level(std::istream &aDefinitionStream, aunteater::Engine &aEngine)
         mDefinition.push_back({rightOffset, rightOffset+width});
 
         makeWall(rightOffset, aEngine);
+
+        double positionA = rightOffset+width - WALL_EXTENT - PORTAL_EXTENT/2.;
+        double positionB = rightOffset+width + WALL_EXTENT + PORTAL_EXTENT/2.;
+        makePortal(positionA, positionB, aEngine);
+        makePortal(positionB, positionA, aEngine);
 
         rightOffset += width;
     }

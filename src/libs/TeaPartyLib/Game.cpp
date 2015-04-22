@@ -2,7 +2,9 @@
 
 #include "Level.h"
 
+#include "Components/ActionController.h"
 #include "Components/AnimationList.h"
+#include "Components/CallbackOnActor.h"
 #include "Components/Displacement.h"
 #include "Components/Extent.h"
 #include "Components/Keyboard.h"
@@ -11,13 +13,15 @@
 #include "Components/Position.h"
 #include "Components/Sprite.h"
 #include "Components/Speed.h"
+#include "Components/TriggeringAction.h"
+#include "Systems/AnimationDispatcher.h"
 #include "Systems/CameraController.h"
 #include "Systems/CollisionSolver.h"
 #include "Systems/Display.h"
 #include "Systems/Input.h"
-#include "Systems/Move.h"
 #include "Systems/KeyboardController.h"
-#include "Systems/AnimationDispatcher.h"
+#include "Systems/Move.h"
+#include "Systems/Trigger.h"
 
 #include <ResourcesPath.h>
 
@@ -55,8 +59,10 @@ Game::Game() :
     STFU(Input);
     STFU(Move)
     STFU(CollisionSolver)
+    // From here, everything have its position assigned for the next frame to display
     STFU1(CameraController, mLevel.get())
     STFU(AnimationDispatcher);
+    STFU(Trigger);
 
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_left",2,30.0f));
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_right",2,30.0f));
@@ -65,6 +71,7 @@ Game::Game() :
     aunteater::Entity sprite;
 
     //*** Player Entity setup ***//
+    sprite.addComponent<Component::ActionController>();
     sprite.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.xml"));
     sprite.addComponent<Component::Position>(150, -50);
     sprite.addComponent<Component::Displacement>();
@@ -79,10 +86,14 @@ Game::Game() :
     mEngine->addEntity("player", sprite);
     //*** End Player ***//
 
+    //*** Player Camera setup ***//
     aunteater::Entity camera;
     camera.addComponent<Component::Position>(0., 0);
     camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player"));
     mEngine->addEntity("camera", camera);
+    //*** End Camera ***//
+
+
 }
 
 Game::~Game()

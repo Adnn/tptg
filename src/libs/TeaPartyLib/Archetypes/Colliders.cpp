@@ -13,6 +13,6 @@ const ArchetypeTypeSet NodeMove::gComponentTypes = {
 
 const ArchetypeTypeSet NodeObstacle::gComponentTypes = {
     &typeid(TeaParty::Component::Extent),
-    &typeid(TeaParty::Component::Position)
+    &typeid(TeaParty::Component::Position),
+    &typeid(TeaParty::Component::Static)
 };
-

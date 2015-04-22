@@ -27,7 +27,17 @@ public:
     input_state buttonA;
     input_state buttonZ;
 
+private:
+    COMP_CLONE(ActionController)
 };
+
+enum class Action
+{
+    A,
+    Z,
+    ANY_OR_NONE
+};
+
 
 inline bool isUp(input_state aState)
 {
@@ -38,5 +48,31 @@ inline bool isDown(input_state aState)
 {
     return static_cast<int>(aState) & static_cast<int>(input_state::BUTTON_DOWN);
 }
-}}
+
+inline bool isFalling(input_state aState)
+{
+    return static_cast<int>(aState) == static_cast<int>(input_state::BUTTON_FALLING_EDGE);
+}
+
+
+inline bool statisfies(Action aExpectation, const ActionController &aController)
+{
+    switch (aExpectation)
+    {
+    case Action::ANY_OR_NONE:
+        return true;
+        break;
+    case Action::A:
+        return isFalling(aController.buttonA);
+        break;
+    case Action::Z:
+        return isFalling(aController.buttonZ);
+        break;
+    default:
+        return false;
+    }
+}
+
+}} // namespace TeaParty::Component
+
 #endif  // #ifdef

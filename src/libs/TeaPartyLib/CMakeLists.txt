@@ -14,8 +14,10 @@ set(${PROJECT_NAME}_HEADERS
     Animation.h
     Archetypes/Colliders.h
     Archetypes/NodeCamera.h
+    Archetypes/TriggersActors.h
     Components/ActionController.h
     Components/AnimationList.h
+    Components/CallbackOnActor.h
     Components/Displacement.h
     Components/Extent.h
     Components/Image.h
@@ -24,6 +26,8 @@ set(${PROJECT_NAME}_HEADERS
     Components/Position.h
     Components/Speed.h
     Components/Sprite.h
+    Components/Static.h
+    Components/TriggeringAction.h
     Game.h
     Level.h
     Systems/AnimationDispatcher.h
@@ -33,6 +37,8 @@ set(${PROJECT_NAME}_HEADERS
     Systems/Input.h
     Systems/KeyboardController.h
     Systems/Move.h
+    Systems/Trigger.h
+    Systems/Utilities.h
     Vec2.h
     globals.h
 )
@@ -41,6 +47,7 @@ set(${PROJECT_NAME}_HEADERS
 set(${PROJECT_NAME}_SOURCES
     Archetypes/Colliders.cpp
     Archetypes/NodeCamera.cpp
+    Archetypes/TriggersActors.cpp
     Components/PlayerReference.cpp
     Game.cpp
     Level.cpp
@@ -51,6 +58,7 @@ set(${PROJECT_NAME}_SOURCES
     Systems/Input.cpp
     Systems/KeyboardController.cpp
     Systems/Move.cpp
+    Systems/Trigger.cpp
 )
 
 source_group("Header Files\\Archetypes" REGULAR_EXPRESSION Archetypes/.*h)

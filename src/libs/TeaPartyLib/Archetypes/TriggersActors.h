@@ -1,31 +1,32 @@
 //
-//  NodeMoving.h
+//  NodeTriggersActors.h
 //
 //  Created by Adrien David.
 //
 //
 
-#ifndef TeaParty_NodeMoving_h
-#define TeaParty_NodeMoving_h
+#ifndef TeaParty_NodeTriggersActors_h
+#define TeaParty_NodeTriggersActors_h
 
 #include <aunteater/globals.h>
 
-#include "../Components/Displacement.h"
+#include "../Components/ActionController.h"
+#include "../Components/CallbackOnActor.h"
 #include "../Components/Extent.h"
 #include "../Components/Position.h"
 #include "../Components/Speed.h"
-#include "../Components/Static.h"
+#include "../Components/TriggeringAction.h"
 
 
 namespace TeaParty { namespace Archetype {
 
-class NodeMove
+class NodeActor
 {
 public:
     static const aunteater::ArchetypeTypeSet gComponentTypes;
 };
 
-class NodeObstacle
+class NodeTrigger
 {
 public:
     static const aunteater::ArchetypeTypeSet gComponentTypes;
