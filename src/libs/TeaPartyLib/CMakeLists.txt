@@ -53,6 +53,14 @@ set(${PROJECT_NAME}_SOURCES
     Systems/Move.cpp
 )
 
+source_group("Header Files\\Archetypes" REGULAR_EXPRESSION Archetypes/.*h)
+source_group("Header Files\\Components" REGULAR_EXPRESSION Components/.*h)
+source_group("Header Files\\Systems" REGULAR_EXPRESSION Systems/.*h)
+
+source_group("Source Files\\Archetypes" REGULAR_EXPRESSION Archetypes/.*cpp)
+source_group("Source Files\\Components" REGULAR_EXPRESSION Components/.*cpp)
+source_group("Source Files\\Systems" REGULAR_EXPRESSION Systems/.*cpp)
+
 add_library(${PROJECT_NAME}
     ${${PROJECT_NAME}_SOURCES}
     ${${PROJECT_NAME}_HEADERS}
