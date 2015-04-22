@@ -50,7 +50,7 @@ void Input::update(double time)
 			}
 			else
 			{
-				speed->vX = 0;
+				//speed->vX = 0;
 				animation->mAnimationToPlay = "idle";
 			}
 		}

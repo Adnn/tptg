@@ -14,18 +14,23 @@
 #include "Components/Sprite.h"
 #include "Components/Speed.h"
 #include "Components/TriggeringAction.h"
-#include "Systems/AnimationDispatcher.h"
 #include "Systems/CameraController.h"
 #include "Systems/CollisionSolver.h"
+#include "Components/AnimationList.h"
+#include "Components/Physics.h"
 #include "Systems/Display.h"
 #include "Systems/Input.h"
 #include "Systems/KeyboardController.h"
 #include "Systems/Move.h"
 #include "Systems/Trigger.h"
+#include "Systems/AnimationDispatcher.h"
+#include "Systems/Physics.h"
+#include "Systems/Friction.h"
 
 #include <ResourcesPath.h>
 
 #include <aunteater/Engine.h>
+#include <sstream>
 
 using namespace TeaParty;
 
@@ -63,6 +68,12 @@ Game::Game() :
     STFU1(CameraController, mLevel.get())
     STFU(AnimationDispatcher);
     STFU(Trigger);
+	STFU(Display);
+	STFU(KeyboardController);
+	STFU(Input);
+    STFU(Friction);
+    STFU(Physics);
+    STFU(Move);
 
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_left",2,30.0f));
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_right",2,30.0f));
@@ -79,7 +90,8 @@ Game::Game() :
     sprite.addComponent<Component::Speed>();
     sprite.addComponent<Component::Keyboard>();
     sprite.addComponent<Component::AnimationList>("idle");
-    
+    sprite.addComponent<Component::Physics>();
+
     sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
     sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
     sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());

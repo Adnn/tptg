@@ -41,6 +41,14 @@ set(${PROJECT_NAME}_HEADERS
     Systems/Utilities.h
     Vec2.h
     globals.h
+    Systems/Friction.h
+    Systems/Physics.h
+    Components/ActionController.h
+    Components/Keyboard.h
+    Components/Position.h
+    Components/Speed.h
+    Components/Physics.h
+    Components/AnimationList.h
 )
 
 # TODO : list .cpp files here
@@ -59,6 +67,8 @@ set(${PROJECT_NAME}_SOURCES
     Systems/KeyboardController.cpp
     Systems/Move.cpp
     Systems/Trigger.cpp
+    Systems/Friction.cpp
+    Systems/Physics.cpp
 )
 
 source_group("Header Files\\Archetypes" REGULAR_EXPRESSION Archetypes/.*h)

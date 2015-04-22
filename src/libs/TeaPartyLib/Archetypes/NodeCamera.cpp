@@ -6,6 +6,7 @@
 
 using namespace TeaParty::Archetype;
 using aunteater::ArchetypeTypeSet;
+using namespace TeaParty;
 
 const ArchetypeTypeSet NodeCamera::gComponentTypes = {
     &typeid(Component::Position),

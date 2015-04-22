@@ -14,11 +14,11 @@
 namespace TeaParty { namespace System {
 
 
-inline TeaParty::Component::Extent getBounding(const aunteater::Node &aNode)
+inline TeaParty::Component::Extent getBounding(aunteater::Node &aNode)
 {
     const auto & pos = aNode.get<Component::Position>().coords;
     const auto & extent = aNode.get<Component::Extent>();
-    return {pos.x-extent.left, pos.x+extent.right};
+    return TeaParty::Component::Extent(pos.x-extent.left, pos.x+extent.right);
 }
 
 inline bool testCollision(const Component::Extent &aLhs, const Component::Extent &aRhs)
