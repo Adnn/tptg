@@ -11,8 +11,13 @@ configure_file(${CMAKE_SOURCE_DIR}/cmake/Export.h.in
 # Helpful windows command : dir /b /oen
 set(${PROJECT_NAME}_HEADERS
     ${CMAKE_BINARY_DIR}/include/${PROJECT_NAME}_Export.h
+    Animation.h
+    Archetypes/Colliders.h
     Archetypes/NodeCamera.h
     Components/ActionController.h
+    Components/AnimationList.h
+    Components/Displacement.h
+    Components/Extent.h
     Components/Image.h
     Components/Keyboard.h
     Components/PlayerReference.h
@@ -21,34 +26,31 @@ set(${PROJECT_NAME}_HEADERS
     Components/Sprite.h
     Game.h
     Level.h
-    Animation.h
-    Vec2.h
-    globals.h
+    Systems/AnimationDispatcher.h
     Systems/CameraController.h
+    Systems/CollisionSolver.h
     Systems/Display.h
     Systems/Input.h
     Systems/KeyboardController.h
     Systems/Move.h
-    Systems/AnimationDispatcher.h
-    Components/ActionController.h
-    Components/Keyboard.h
-    Components/Position.h
-    Components/Speed.h
-    Components/AnimationList.h
+    Vec2.h
+    globals.h
 )
 
 # TODO : list .cpp files here
 set(${PROJECT_NAME}_SOURCES
+    Archetypes/Colliders.cpp
     Archetypes/NodeCamera.cpp
     Components/PlayerReference.cpp
     Game.cpp
     Level.cpp
+    Systems/AnimationDispatcher.cpp
     Systems/CameraController.cpp
+    Systems/CollisionSolver.cpp
     Systems/Display.cpp
     Systems/Input.cpp
     Systems/KeyboardController.cpp
     Systems/Move.cpp
-    Systems/AnimationDispatcher.cpp
 )
 
 add_library(${PROJECT_NAME}

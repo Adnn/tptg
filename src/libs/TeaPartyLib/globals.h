@@ -1,1 +1,2 @@
 #define CAM_WIDTH 960/2
+#define WALL_EXTENT 20

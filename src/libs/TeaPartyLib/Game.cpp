@@ -3,6 +3,8 @@
 #include "Level.h"
 
 #include "Components/AnimationList.h"
+#include "Components/Displacement.h"
+#include "Components/Extent.h"
 #include "Components/Keyboard.h"
 #include "Components/Image.h"
 #include "Components/PlayerReference.h"
@@ -10,6 +12,7 @@
 #include "Components/Sprite.h"
 #include "Components/Speed.h"
 #include "Systems/CameraController.h"
+#include "Systems/CollisionSolver.h"
 #include "Systems/Display.h"
 #include "Systems/Input.h"
 #include "Systems/Move.h"
@@ -48,9 +51,10 @@ Game::Game() :
     //initLevel();
 
     STFU(Display);
-    STFU(KeyboardController);
+    /**/STFU(KeyboardController); // not changing anything at the moment...
     STFU(Input);
     STFU(Move)
+    STFU(CollisionSolver)
     STFU1(CameraController, mLevel.get())
     STFU(AnimationDispatcher);
 
@@ -60,8 +64,11 @@ Game::Game() :
 
     aunteater::Entity sprite;
 
+    //*** Player Entity setup ***//
     sprite.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.xml"));
     sprite.addComponent<Component::Position>(150, -50);
+    sprite.addComponent<Component::Displacement>();
+    sprite.addComponent<Component::Extent>();
     sprite.addComponent<Component::Speed>();
     sprite.addComponent<Component::Keyboard>();
     sprite.addComponent<Component::AnimationList>("idle");
@@ -70,6 +77,7 @@ Game::Game() :
     sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
     sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
     mEngine->addEntity("player", sprite);
+    //*** End Player ***//
 
     aunteater::Entity camera;
     camera.addComponent<Component::Position>(0., 0);

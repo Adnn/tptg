@@ -1,5 +1,5 @@
 //
-//  ComponentSprite.h
+//  Move.h
 //  aunteater
 //
 //  Created by Adrien on 05/04/14.
@@ -15,16 +15,18 @@
 
 
 namespace TeaParty { namespace System {
+
 class Move : public aunteater::System
 {
 public:
-	Move();
+	//Move();
 	virtual void addedToEngine(aunteater::Engine &aEngine);
 	virtual void update(double time);
 
 public:
 	aunteater::Nodes mNodeList;
 };
+
 }}
 
-#endif /* defined(__aunteater__SytemDisplay__) */
+#endif /* defined(__aunteater__SystemMove__) */

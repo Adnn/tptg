@@ -23,6 +23,7 @@ struct Position : public aunteater::Component
     {}
 
     Vec2 coords;
+    int  z;
 private:
     COMP_CLONE(Position)
 };
