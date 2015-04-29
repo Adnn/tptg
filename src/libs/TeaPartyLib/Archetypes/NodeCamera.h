@@ -10,6 +10,10 @@
 
 #include <aunteater/globals.h>
 
+#include "../Components/ClippedScene.h"
+#include "../Components/PlayerReference.h"
+#include "../Components/Position.h"
+
 namespace TeaParty { namespace Archetype {
 
 class NodeCamera

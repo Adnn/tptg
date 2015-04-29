@@ -5,6 +5,7 @@
 #include "Components/ActionController.h"
 #include "Components/AnimationList.h"
 #include "Components/CallbackOnActor.h"
+#include "Components/ClippedScene.h"
 #include "Components/Displacement.h"
 #include "Components/Extent.h"
 #include "Components/Keyboard.h"
@@ -99,13 +100,18 @@ Game::Game() :
     //*** End Player ***//
 
     //*** Player Camera setup ***//
-    aunteater::Entity camera;
-    camera.addComponent<Component::Position>(0., 0);
-    camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player"));
-    mEngine->addEntity("camera", camera);
+    for(int rowId = 0; rowId != VP_ROWS; ++rowId)
+    {
+        for(int colId = 0; colId != VP_COLS; ++colId)
+        {
+            aunteater::Entity camera;
+            camera.addComponent<Component::Position>(0., 0.);
+            camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player"));
+            camera.addComponent<Component::ClippedScene>(rowId, colId);
+            mEngine->addEntity(camera);
+        }
+    }
     //*** End Camera ***//
-
-
 }
 
 Game::~Game()

@@ -8,7 +8,7 @@
 
 // Number of viewports per row and per column
 #define VP_ROWS 2.
-#define VP_COLS 2.
+#define VP_COLS 1.
 
 #define CAM_WIDTH X_ROOM
 #define CAM_HEIGHT Y_ROOM

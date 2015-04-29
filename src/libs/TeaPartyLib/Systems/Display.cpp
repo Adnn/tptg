@@ -41,10 +41,9 @@ const ArchetypeTypeSet NodeImage::gComponentTypes = {
 void ImageObserver::addedNode(aunteater::Node &aNode)
 {
     auto sceneElem = aNode.get<Component::Image>().polyImage;
-    mScene.addChild(sceneElem.get());
+    mSimulationRoot->addChild(sceneElem.get());
     const Vec2 pos = aNode.get<Component::Position>().coords;
     sceneElem->setPosition(pos.x, pos.y);
-    //sceneElem->setScale(4, 2);
 }
 
 void ImageObserver::removedNode(aunteater::Node &aNode)
@@ -52,25 +51,20 @@ void ImageObserver::removedNode(aunteater::Node &aNode)
     /// \todo
 }
 
-Display::Display() :
-    mScene(Polycode::Scene::SCENE_2D)
+void CameraObserver::addedNode(aunteater::Node &aNode)
 {
-//    mScene.getActiveCamera()->setProjectionMode(Polycode::Camera::ORTHO_SIZE_LOCK_WIDTH);
-    mScene.getActiveCamera()->setProjectionMode(Polycode::Camera::ORTHO_SIZE_MANUAL);
+    // All cameras clipping scene share the same scene graph : it is assigned here
+    auto clippedScene = aNode.get<Component::ClippedScene>().polyScene;
+    clippedScene->addChild(mSimulationRoot);
+}
 
-    // The camera will map the dimensions given here (in pixels) to the total size of the window.
-    mScene.getActiveCamera()->setOrthoSize(CAM_WIDTH*VP_COLS, CAM_HEIGHT*VP_ROWS);
+void CameraObserver::removedNode(aunteater::Node &aNode)
+{}
 
-    // The only way we found to simulate viewports on the window.
-    mScene.rootEntity.enableScissor = true;
-    // Creates the top-left viewport
-    mScene.rootEntity.scissorBox = {0, 0, X_RES/VP_COLS, Y_RES/VP_ROWS};
 
-    // And moves the whole scene to be aligned in the top left "viewport"
-    mScene.rootEntity.setPositionY(Y_ROOM/VP_ROWS);
-    mScene.rootEntity.setPositionX(-X_ROOM/VP_COLS);
-    
-	Polycode::CoreServices::getInstance()->getRenderer()->setTextureFilteringMode(Polycode::Renderer::TEX_FILTERING_NEAREST);
+Display::Display()
+{
+    Polycode::CoreServices::getInstance()->getRenderer()->setTextureFilteringMode(Polycode::Renderer::TEX_FILTERING_NEAREST);
 }
 
 void Display::addedToEngine(Engine &aEngine)
@@ -79,6 +73,7 @@ void Display::addedToEngine(Engine &aEngine)
     mCameras = &aEngine.getNodes<NodeCamera>();
     aEngine.registerToNodes<NodeRenderable>(this);
     aEngine.registerToNodes<NodeImage>(&mImageObserver);
+    aEngine.registerToNodes<NodeCamera>(&mCameraObserver);
 }
 
 void Display::update(double aTime)
@@ -93,14 +88,15 @@ void Display::update(double aTime)
     for (aunteater::Node node : *mCameras)
     {
         const Vec2 pos = node.get<Component::Position>().coords;
-        mScene.getActiveCamera()->setPosition(pos.x, pos.y);
+        auto scene = node.get<Component::ClippedScene>().polyScene;
+        scene->getActiveCamera()->setPosition(pos.x, pos.y);
     }
 }
 
 void Display::addedNode(aunteater::Node &aNode)
 {
     auto sceneSprite = aNode.get<Component::Sprite>().polySprite;
-    mScene.addChild(sceneSprite.get());
+    mSimulationRoot.addChild(sceneSprite.get());
     sceneSprite->setSpriteByName("player");
     const Vec2 pos = aNode.get<Component::Position>().coords;
     sceneSprite->setPosition(pos.x, pos.y);
