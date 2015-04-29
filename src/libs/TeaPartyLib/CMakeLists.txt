@@ -28,6 +28,8 @@ set(${PROJECT_NAME}_HEADERS
     Components/Sprite.h
     Components/Static.h
     Components/TriggeringAction.h
+    Components/HudItem.h
+    Components/Inventory.h
     Game.h
     Level.h
     Systems/AnimationDispatcher.h
@@ -39,7 +41,11 @@ set(${PROJECT_NAME}_HEADERS
     Systems/Move.h
     Systems/Trigger.h
     Systems/Utilities.h
+    Systems/HudDisplay.h
+    Systems/Inventory.h
+    Systems/InventoryLayout.h
     Vec2.h
+    InventoryStruct.h
     globals.h
     Systems/Friction.h
     Systems/Physics.h
@@ -69,6 +75,9 @@ set(${PROJECT_NAME}_SOURCES
     Systems/Trigger.cpp
     Systems/Friction.cpp
     Systems/Physics.cpp
+    Systems/Inventory.cpp
+    Systems/InventoryLayout.cpp
+    Systems/HudDisplay.cpp
 )
 
 source_group("Header Files\\Archetypes" REGULAR_EXPRESSION Archetypes/.*h)

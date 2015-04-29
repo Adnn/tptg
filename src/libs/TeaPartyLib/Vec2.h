@@ -9,6 +9,7 @@
 #define BenchingBall_Vec2_h
 
 #include <cmath>
+#include <Polycode.h>
 
 namespace TeaParty {
 
@@ -17,6 +18,11 @@ struct Vec2
     Vec2(double x, double y):
         x(x),
         y(y)
+    {}
+
+    Vec2(Polycode::Vector2 v):
+        x(v.x),
+        y(v.x)
     {}
 
     Vec2 operator+(const Vec2 &aRhs) const

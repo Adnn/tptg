@@ -14,6 +14,8 @@
 #include "Components/Sprite.h"
 #include "Components/Speed.h"
 #include "Components/TriggeringAction.h"
+#include "Components/HudItem.h"
+#include "Components/Inventory.h"
 #include "Systems/CameraController.h"
 #include "Systems/CollisionSolver.h"
 #include "Components/AnimationList.h"
@@ -26,6 +28,9 @@
 #include "Systems/AnimationDispatcher.h"
 #include "Systems/Physics.h"
 #include "Systems/Friction.h"
+#include "Systems/Inventory.h"
+#include "Systems/InventoryLayout.h"
+#include "Systems/HudDisplay.h"
 
 #include <ResourcesPath.h>
 
@@ -74,6 +79,9 @@ Game::Game() :
     STFU(Friction);
     STFU(Physics);
     STFU(Move);
+    STFU(HudDisplay);
+    STFU(Inventory);
+    STFU(InventoryLayout);
 
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_left",2,30.0f));
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_right",2,30.0f));
@@ -91,6 +99,21 @@ Game::Game() :
     sprite.addComponent<Component::Keyboard>();
     sprite.addComponent<Component::AnimationList>("idle");
     sprite.addComponent<Component::Physics>();
+    sprite.addComponent<Component::Inventory>();
+
+    aunteater::Entity itemYo;
+    itemYo.addComponent<Component::HudItem>("penis-like-sword.png");
+    itemYo.addComponent<Component::Position>(0,0);
+    mEngine->addEntity("penis-like-sword",itemYo);
+
+    sprite.get<Component::Inventory>()->addItemToInventory("penis-like-sword",mEngine->getEntity("penis-like-sword"));
+
+    aunteater::Entity item;
+    item.addComponent<Component::HudItem>("penis.png");
+    item.addComponent<Component::Position>(0,0);
+    mEngine->addEntity("penis",item);
+
+    sprite.get<Component::Inventory>()->addItemToInventory("penis",mEngine->getEntity("penis"));
 
     sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
     sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());

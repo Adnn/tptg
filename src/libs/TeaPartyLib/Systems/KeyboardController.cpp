@@ -59,5 +59,6 @@ void KeyboardController::update(double time)
         buttonUpdate(keyboard, actionController.buttonAction, Polycode::KEY_SPACE);
         buttonUpdate(keyboard, actionController.buttonA, Polycode::KEY_a);
         buttonUpdate(keyboard, actionController.buttonZ, Polycode::KEY_z);
+        buttonUpdate(keyboard, actionController.buttonT, Polycode::KEY_t);
     }
 }
