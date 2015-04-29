@@ -18,10 +18,12 @@ set(${PROJECT_NAME}_HEADERS
     Components/ActionController.h
     Components/AnimationList.h
     Components/CallbackOnActor.h
+    Components/ClippedScene.h
     Components/Displacement.h
     Components/Extent.h
     Components/Image.h
     Components/Keyboard.h
+    Components/Physics.h
     Components/PlayerReference.h
     Components/Position.h
     Components/Speed.h
@@ -34,21 +36,15 @@ set(${PROJECT_NAME}_HEADERS
     Systems/CameraController.h
     Systems/CollisionSolver.h
     Systems/Display.h
+    Systems/Friction.h
     Systems/Input.h
     Systems/KeyboardController.h
     Systems/Move.h
+    Systems/Physics.h
     Systems/Trigger.h
     Systems/Utilities.h
     Vec2.h
     globals.h
-    Systems/Friction.h
-    Systems/Physics.h
-    Components/ActionController.h
-    Components/Keyboard.h
-    Components/Position.h
-    Components/Speed.h
-    Components/Physics.h
-    Components/AnimationList.h
 )
 
 # TODO : list .cpp files here
@@ -56,6 +52,7 @@ set(${PROJECT_NAME}_SOURCES
     Archetypes/Colliders.cpp
     Archetypes/NodeCamera.cpp
     Archetypes/TriggersActors.cpp
+    Components/ClippedScene.cpp
     Components/PlayerReference.cpp
     Game.cpp
     Level.cpp
@@ -63,21 +60,21 @@ set(${PROJECT_NAME}_SOURCES
     Systems/CameraController.cpp
     Systems/CollisionSolver.cpp
     Systems/Display.cpp
+    Systems/Friction.cpp
     Systems/Input.cpp
     Systems/KeyboardController.cpp
     Systems/Move.cpp
-    Systems/Trigger.cpp
-    Systems/Friction.cpp
     Systems/Physics.cpp
+    Systems/Trigger.cpp
 )
 
-source_group("Header Files\\Archetypes" REGULAR_EXPRESSION Archetypes/.*h)
-source_group("Header Files\\Components" REGULAR_EXPRESSION Components/.*h)
-source_group("Header Files\\Systems" REGULAR_EXPRESSION Systems/.*h)
+source_group("Header Files\\Archetypes" REGULAR_EXPRESSION Archetypes/.*\\.h)
+source_group("Header Files\\Components" REGULAR_EXPRESSION Components/.*\\.h)
+source_group("Header Files\\Systems" REGULAR_EXPRESSION Systems/.*\\.h)
 
-source_group("Source Files\\Archetypes" REGULAR_EXPRESSION Archetypes/.*cpp)
-source_group("Source Files\\Components" REGULAR_EXPRESSION Components/.*cpp)
-source_group("Source Files\\Systems" REGULAR_EXPRESSION Systems/.*cpp)
+source_group("Source Files\\Archetypes" REGULAR_EXPRESSION Archetypes/.*\\.cpp)
+source_group("Source Files\\Components" REGULAR_EXPRESSION Components/.*\\.cpp)
+source_group("Source Files\\Systems" REGULAR_EXPRESSION Systems/.*\\.cpp)
 
 add_library(${PROJECT_NAME}
     ${${PROJECT_NAME}_SOURCES}
