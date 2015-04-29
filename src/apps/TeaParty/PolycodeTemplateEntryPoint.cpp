@@ -2,10 +2,12 @@
 // Polycode template. Write your code here.
 // 
 
+#include <TeaPartyLib/globals.h>
+
 #include "PolycodeTemplateEntryPoint.h"
 
 PolycodeTemplateEntryPoint::PolycodeTemplateEntryPoint(PolycodeView *view) :
-    core(new POLYCODE_CORE(view, 960, 540,false,false, 0,0,60))
+    core(new POLYCODE_CORE(view, X_RES, Y_RES, false, true, 0,0,60))
 {
 //    Polycode::CoreServices::getInstance()->getResourceManager()->addArchive("/Users/adn/Desktop/default.pak");
 //    Polycode::CoreServices::getInstance()->getResourceManager()->addDirResource("default");

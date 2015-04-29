@@ -55,8 +55,21 @@ void ImageObserver::removedNode(aunteater::Node &aNode)
 Display::Display() :
     mScene(Polycode::Scene::SCENE_2D)
 {
-    mScene.getActiveCamera()->setProjectionMode(Polycode::Camera::ORTHO_SIZE_LOCK_WIDTH);
-    mScene.getActiveCamera()->setOrthoSize(CAM_WIDTH, 540);
+//    mScene.getActiveCamera()->setProjectionMode(Polycode::Camera::ORTHO_SIZE_LOCK_WIDTH);
+    mScene.getActiveCamera()->setProjectionMode(Polycode::Camera::ORTHO_SIZE_MANUAL);
+
+    // The camera will map the dimensions given here (in pixels) to the total size of the window.
+    mScene.getActiveCamera()->setOrthoSize(CAM_WIDTH*VP_COLS, CAM_HEIGHT*VP_ROWS);
+
+    // The only way we found to simulate viewports on the window.
+    mScene.rootEntity.enableScissor = true;
+    // Creates the top-left viewport
+    mScene.rootEntity.scissorBox = {0, 0, X_RES/VP_COLS, Y_RES/VP_ROWS};
+
+    // And moves the whole scene to be aligned in the top left "viewport"
+    mScene.rootEntity.setPositionY(Y_ROOM/VP_ROWS);
+    mScene.rootEntity.setPositionX(-X_ROOM/VP_COLS);
+    
 	Polycode::CoreServices::getInstance()->getRenderer()->setTextureFilteringMode(Polycode::Renderer::TEX_FILTERING_NEAREST);
 }
 
