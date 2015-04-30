@@ -15,6 +15,8 @@
 #include "Components/Sprite.h"
 #include "Components/Speed.h"
 #include "Components/TriggeringAction.h"
+#include "Components/HudItem.h"
+#include "Components/Inventory.h"
 #include "Systems/CameraController.h"
 #include "Systems/CollisionSolver.h"
 #include "Components/AnimationList.h"
@@ -27,6 +29,10 @@
 #include "Systems/AnimationDispatcher.h"
 #include "Systems/Physics.h"
 #include "Systems/Friction.h"
+#include "Systems/Inventory.h"
+#include "Systems/InventoryLayout.h"
+#include "Systems/HudDisplay.h"
+#include "Systems/Tween.h"
 
 #include <ResourcesPath.h>
 
@@ -63,18 +69,24 @@ Game::Game() :
     STFU(Display);
     /**/STFU(KeyboardController); // not changing anything at the moment...
     STFU(Input);
-    STFU(Move)
-    STFU(CollisionSolver)
+    STFU(Move);
+    STFU(CollisionSolver);
+    STFU(Tween);
     // From here, everything have its position assigned for the next frame to display
-    STFU1(CameraController, mLevel.get())
+    STFU1(CameraController, mLevel.get());
     STFU(AnimationDispatcher);
     STFU(Trigger);
 	STFU(Display);
+    STFU(InventoryLayout);
+    STFU(Inventory);
+
+    //Everything depending on falling edge should be put before KeayboardController
 	STFU(KeyboardController);
 	STFU(Input);
     STFU(Friction);
     STFU(Physics);
     STFU(Move);
+    STFU(HudDisplay);
 
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_left",2,30.0f));
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_right",2,30.0f));
@@ -92,6 +104,25 @@ Game::Game() :
     sprite.addComponent<Component::Keyboard>();
     sprite.addComponent<Component::AnimationList>("idle");
     sprite.addComponent<Component::Physics>();
+    sprite.addComponent<Component::Inventory>();
+
+    aunteater::Entity itemYo;
+    itemYo.addComponent<Component::HudItem>(new Polycode::SpriteSet("items.sprites"));
+    itemYo.get<Component::HudItem>()->polySprite.get()->setSpriteByName("item1");
+    itemYo.get<Component::HudItem>()->polySprite.get()->setSpriteStateByName("default",0,false);
+    itemYo.addComponent<Component::Position>(0,0);
+    mEngine->addEntity("penis-like-sword",itemYo);
+
+    sprite.get<Component::Inventory>()->addItemToInventory("penis-like-sword",mEngine->getEntity("penis-like-sword"));
+
+    aunteater::Entity item;
+    item.addComponent<Component::HudItem>(new Polycode::SpriteSet("items.sprites"));
+    item.get<Component::HudItem>()->polySprite.get()->setSpriteByName("item2");
+    item.get<Component::HudItem>()->polySprite.get()->setSpriteStateByName("default",0,false);
+	item.addComponent<Component::Position>(0, 0);
+    mEngine->addEntity("penis",item);
+
+    sprite.get<Component::Inventory>()->addItemToInventory("penis",mEngine->getEntity("penis"));
 
     sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
     sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());

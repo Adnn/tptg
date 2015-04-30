@@ -26,6 +26,7 @@ public:
     input_state buttonAction;
     input_state buttonA;
     input_state buttonZ;
+    input_state buttonT;
 
 private:
     COMP_CLONE(ActionController)
@@ -35,6 +36,7 @@ enum class Action
 {
     A,
     Z,
+    T,
     ANY_OR_NONE
 };
 
@@ -68,6 +70,8 @@ inline bool statisfies(Action aExpectation, const ActionController &aController)
     case Action::Z:
         return isFalling(aController.buttonZ);
         break;
+    case Action::T:
+        return isFalling(aController.buttonT);
     default:
         return false;
     }
