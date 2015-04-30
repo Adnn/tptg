@@ -56,10 +56,25 @@ struct Vec2
         return *this;
     }
 
+    bool operator!=(const Vec2 &aRhs)
+    {
+        return x != aRhs.x || y != aRhs.y;
+    }
+
+    bool operator==(const Vec2 &aRhs)
+    {
+        return x == aRhs.x && y == aRhs.y;
+    }
+
     Vec2 operator*(double k) const
     {
         return {x*k, y*k};
     }
+
+	Vec2 operator/(double k) const
+	{
+		return{ x/k, y/k };
+	}
 
     double dot(const Vec2 &aRhs) const
     {

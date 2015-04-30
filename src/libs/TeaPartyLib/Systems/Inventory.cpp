@@ -32,16 +32,18 @@ void Inventory::update(double time) {
 		const auto action = node.get<Component::ActionController>();
 		auto inventory = &node.get<Component::Inventory>();
 
+		auto activeItem = inventory->mInventoryContent.find(inventory->mActiveItem);
+
 		//For now toggle inventory action is hard coded
 		if (Component::statisfies(Component::Action::T, action))
 		{
-			if (inventory->mActiveItem++ == inventory->mInventoryContent.end())
+			if (++activeItem == inventory->mInventoryContent.end())
 			{
-				inventory->mActiveItem = inventory->mInventoryContent.begin();
+				inventory->mActiveItem = inventory->mInventoryContent.begin()->first;
 			}
 			else
 			{
-				inventory->mActiveItem++;
+				inventory->mActiveItem = activeItem->first;
 			}
 		}
 	}

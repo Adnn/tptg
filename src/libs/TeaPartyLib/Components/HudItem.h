@@ -16,11 +16,11 @@ namespace TeaParty { namespace Component {
 class HudItem : public aunteater::Component
 {
 public:
-	HudItem(const std::string &aFile) :
-            polyImage(std::make_shared<Polycode::SceneImage>(aFile))
+	HudItem(const Polycode::SceneSprite &aSpriteSet) :
+            polySprite(std::make_shared<Polycode::SceneSprite>(aSpriteSet))
     {}
 
-    std::shared_ptr<Polycode::SceneImage> polyImage;
+    std::shared_ptr<Polycode::SceneSprite> polySprite;
 
 private:
     COMP_CLONE(HudItem)

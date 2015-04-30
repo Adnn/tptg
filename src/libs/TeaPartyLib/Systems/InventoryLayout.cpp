@@ -3,6 +3,7 @@
 #include "../Components/Inventory.h"
 #include "../Components/Position.h"
 #include "../Components/HudItem.h"
+#include "../Components/Tween.h"
 #include "../Vec2.h"
 
 #include <aunteater/Engine.h>
@@ -24,6 +25,12 @@ const ArchetypeTypeSet NodeInventoryLayout::gComponentTypes = {
 
 void InventoryLayout::addedToEngine(Engine &aEngine)
 {
+	aunteater::Entity currentIndicator;
+    currentIndicator.addComponent<Component::HudItem>(new Polycode::SpriteSet("inventoryIndex.sprites"));
+    currentIndicator.get<Component::HudItem>()->polySprite.get()->setSpriteByName("index");
+    currentIndicator.get<Component::HudItem>()->polySprite.get()->setSpriteStateByName("default",0,false);
+    currentIndicator.addComponent<Component::Position>(0,0);
+    mCurrentIndicator = aEngine.addEntity("indicator",currentIndicator);
     mNodeList = &aEngine.getNodes<NodeInventoryLayout>();
 }
 
@@ -40,8 +47,19 @@ void InventoryLayout::update(double time) {
 
 			itemPos->coords = pos;
 
-			pos += Vec2(image->polyImage.get()->getWidth(),0);
+			pos += Vec2(image->polySprite.get()->getWidth(),0);
 
+		}
+
+		auto itemPos = inventory->mInventoryContent.find(inventory->mActiveItem)->second.mEntity->get<Component::Position>();
+		
+		if (mCurrentIndicator->get<Component::Position>()->coords != itemPos->coords
+			&& !mCurrentIndicator->has<Component::Tween>())
+		{
+			mCurrentIndicator->addComponent<Component::Tween>(
+				mCurrentIndicator->get<Component::Position>()->coords,
+				itemPos->coords,
+				0.2);
 		}
 	}
 }

@@ -1,13 +1,13 @@
 //
-//  InventoryLayout.h
-//  TeaParty
+//  Tween.h
+//  aunteater
 //
-//  Created by Franz on 28/04/15.
+//  Created by Adrien on 05/04/14.
 //
 //
 
-#ifndef _System_InventoryLayout_h
-#define _System_InventoryLayout_h
+#ifndef _System_Tween_h
+#define _System_Tween_h
 
 #include <Polycode.h>
 
@@ -16,19 +16,17 @@
 #include <aunteater/Engine.h>
 
 namespace TeaParty { namespace System {
-class InventoryLayout : public aunteater::System
+class Tween : public aunteater::System
 {
 public:
-	InventoryLayout()
+	Tween()
 	{}
-
 	virtual void addedToEngine(aunteater::Engine &aEngine);
 	virtual void update(double time);
 
 public:
-	aunteater::weak_entity mCurrentIndicator;
 	aunteater::Nodes mNodeList;
 };
 }}
 
-#endif 
+#endif /* defined(__aunteater__InputSystem__) */

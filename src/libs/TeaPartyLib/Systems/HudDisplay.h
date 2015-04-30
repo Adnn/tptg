@@ -15,20 +15,33 @@
 
 namespace TeaParty { namespace System {
 
-class HudDisplay : public aunteater::System, public aunteater::FamilyObserver
+class InventoryObserver : public aunteater::FamilyObserver
+{
+public:
+    InventoryObserver(Polycode::Entity &aInventoryEntity) :
+            mInventoryEntity(aInventoryEntity)
+    {}
+
+    virtual void addedNode(aunteater::Node &aNode) override;
+    virtual void removedNode(aunteater::Node &aNode) override;
+    
+private:
+    Polycode::Entity &mInventoryEntity;
+};
+
+class HudDisplay : public aunteater::System
 {
 public:
     HudDisplay();
 
     virtual void addedToEngine(aunteater::Engine &aEngine) override;
     virtual void update(double aTime) override;
-
-    virtual void addedNode(aunteater::Node &aNode) override;
-    virtual void removedNode(aunteater::Node &aNode) override;
     
 private:
     aunteater::Nodes mHudRenderables;
+    Polycode::Entity mInventory;
     Polycode::Scene mScene;
+	InventoryObserver mInventoryObserver = InventoryObserver(mInventory);
 };
 
 }} // namespace TeaParty::System

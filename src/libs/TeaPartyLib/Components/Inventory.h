@@ -19,7 +19,6 @@ class Inventory : public aunteater::Component
 public:
 	Inventory()
 	{
-		mActiveItem = mInventoryContent.end();
 	}
 
 	void addItemToInventory(const std::string aName, aunteater::weak_entity aInventoryItem, int aQuantity = 1)
@@ -35,16 +34,16 @@ public:
 
 		//TODO(franz):Maybe there is a better way to handle the first insertion edge case
 		//TODO(franz):At one point we will have to handle removal of the last item
-		if (mActiveItem == mInventoryContent.end())
+		if (mActiveItem.empty())
 		{
-			mActiveItem = mInventoryContent.find(aName);
+			mActiveItem = aName;
 		}
 	}
 
 	//Maybe map is not ideal but it's seems easier to handle stock quantity
 	//with a easily definable name for inventory object
 	std::map<std::string, TeaParty::Structure::InventoryStruct> mInventoryContent;
-	std::map<std::string, TeaParty::Structure::InventoryStruct>::iterator mActiveItem;
+	std::string mActiveItem;
 private:
     COMP_CLONE(Inventory)
 };

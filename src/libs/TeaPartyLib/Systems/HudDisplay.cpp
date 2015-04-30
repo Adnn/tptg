@@ -25,38 +25,41 @@ const ArchetypeTypeSet NodeHudRenderable::gComponentTypes = {
 };
 
 HudDisplay::HudDisplay() :
-    mScene(Polycode::Scene::SCENE_2D)
+    mScene(Polycode::Scene::SCENE_2D),
+    mInventory()
 {
     mScene.getActiveCamera()->setProjectionMode(Polycode::Camera::ORTHO_SIZE_LOCK_WIDTH);
     mScene.getActiveCamera()->setOrthoSize(CAM_WIDTH, 540);
+    mScene.rootEntity.addChild(&mInventory);
+    mInventory.setPosition(0,-100,0);
 	Polycode::CoreServices::getInstance()->getRenderer()->setTextureFilteringMode(Polycode::Renderer::TEX_FILTERING_NEAREST);
 }
 
 void HudDisplay::addedToEngine(Engine &aEngine)
 {
     mHudRenderables = &aEngine.getNodes<NodeHudRenderable>();
-    aEngine.registerToNodes<NodeHudRenderable>(this);
+    aEngine.registerToNodes<NodeHudRenderable>(&mInventoryObserver);
 }
 
 void HudDisplay::update(double aTime)
 {
     for (aunteater::Node node : *mHudRenderables)
     {
-        auto sceneSprite = node.get<Component::HudItem>().polyImage;
+        auto sceneSprite = node.get<Component::HudItem>().polySprite;
         const Vec2 pos = node.get<Component::Position>().coords - mScene.getActiveCamera()->getPosition2D();
         sceneSprite->setPosition(pos.x,pos.y);
     }
 }
 
-void HudDisplay::addedNode(aunteater::Node &aNode)
+void InventoryObserver::addedNode(aunteater::Node &aNode)
 {
-    auto sceneElem = aNode.get<Component::HudItem>().polyImage;
-    mScene.addChild(sceneElem.get());
+    auto sceneElem = aNode.get<Component::HudItem>().polySprite;
+    mInventoryEntity.addChild(sceneElem.get());
     const Vec2 pos = aNode.get<Component::Position>().coords;
     sceneElem->setPosition(pos.x, pos.y);
 }
 
-void HudDisplay::removedNode(aunteater::Node &aNode)
+void InventoryObserver::removedNode(aunteater::Node &aNode)
 {
     /// \todo
 }
