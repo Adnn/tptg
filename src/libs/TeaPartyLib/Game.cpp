@@ -99,6 +99,25 @@ Game::Game() :
     mEngine->addEntity("player", sprite);
     //*** End Player ***//
 
+	aunteater::Entity caca;
+
+	//*** Player Entity setup ***//
+	caca.addComponent<Component::ActionController>();
+	caca.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.xml"));
+	caca.addComponent<Component::Position>(500, -50);
+	caca.addComponent<Component::Displacement>();
+	caca.addComponent<Component::Extent>();
+	caca.addComponent<Component::Speed>();
+	caca.addComponent<Component::Keyboard>();
+	caca.addComponent<Component::AnimationList>("idle");
+	caca.addComponent<Component::Physics>();
+
+	caca.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
+	caca.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
+	caca.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
+	mEngine->addEntity("caca", caca);
+	//*** End Player ***//
+
     //*** Player Camera setup ***//
     for(int rowId = 0; rowId != VP_ROWS; ++rowId)
     {
@@ -106,8 +125,17 @@ Game::Game() :
         {
             aunteater::Entity camera;
             camera.addComponent<Component::Position>(0., 0.);
-            camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player"));
-            camera.addComponent<Component::ClippedScene>(rowId, colId);
+			if (rowId % 2 == 0)
+			{
+				camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player"));
+				camera.addComponent<Component::ClippedScene>(rowId, colId);
+			}
+			else 
+			{
+				camera.addComponent<Component::PlayerReference>(mEngine->getEntity("caca"));
+				camera.addComponent<Component::ClippedScene>(rowId, colId);
+			}
+            
             mEngine->addEntity(camera);
         }
     }
