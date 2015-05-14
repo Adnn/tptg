@@ -4,6 +4,8 @@
 
 #include "Components/ActionController.h"
 #include "Components/AnimationList.h"
+#include "Components/AnimationStillFrame.h"
+#include "Components/BallsPoint.h"
 #include "Components/CallbackOnActor.h"
 #include "Components/ClippedScene.h"
 #include "Components/Controller.h"
@@ -34,6 +36,7 @@
 #include "Systems/Trigger.h"
 #include "Systems/PhaseController.h"
 #include "Systems/Physics.h"
+#include "Systems/PointVisualisation.h"
 #include "Systems/Friction.h"
 #include "Systems/Inventory.h"
 #include "Systems/InventoryLayout.h"
@@ -96,6 +99,7 @@ Game::Game() :
     STFU(Display);
     STFU(Display);
     STFU(PhaseController); // must come after display...
+	STFU(PointVisualisation);
     
     STFU(KeyboardController);
     STFU(ControllerController);
@@ -161,6 +165,17 @@ Game::Game() :
     sleepyFace.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
     sleepyFace.get<Component::Sprite>()->polySprite->setScale(11, 11);
     player1.get<Component::GamePhase>()->phaseRootEntity->addChild(sleepyFace.get<Component::Sprite>()->polySprite.get());
+
+    aunteater::Entity point;
+    point.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_deep_counter.sprites"));
+    point.addComponent<Component::Position>(X_ROOM - 50, Y_ROOM/2 - 50, LAYERS-1); // last layer, never displayed by the main phase
+    point.addComponent<Component::AnimationStillFrame>();
+	point.addComponent<Component::BallsPoint>(500);
+    point.get<Component::Sprite>()->polySprite->setSpriteByName("balls_deep_counter");
+    point.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
+    mEngine->addEntity("pointCounter", point);
+	point.get<Component::Sprite>()->polySprite->setScale(3, 3);
+    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(point.get<Component::Sprite>()->polySprite.get());
 
     aunteater::Entity hairyCross;
     hairyCross.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_crosshair.sprites"));

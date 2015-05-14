@@ -2,6 +2,7 @@
 
 #include "../Components/Sprite.h"
 #include "../Components/AnimationList.h"
+#include "../Components/AnimationStillFrame.h"
 #include "../Animation.h"
 
 #include <aunteater/Engine.h>
@@ -22,9 +23,20 @@ const ArchetypeTypeSet NodeAnimationable::gComponentTypes = {
     &typeid(Component::Sprite)
 };
 
+class NodeStatefulAnimationable
+{
+public:
+    static const ArchetypeTypeSet gComponentTypes;
+};
+
+const ArchetypeTypeSet NodeStatefulAnimationable::gComponentTypes = {
+    &typeid(Component::AnimationStillFrame),
+    &typeid(Component::Sprite)
+};
 void AnimationDispatcher::addedToEngine(Engine &aEngine)
 {
     mAnimationables = &aEngine.getNodes<NodeAnimationable>();
+	mStatefulAnimationables = &aEngine.getNodes<NodeStatefulAnimationable>();
 }
 
 void AnimationDispatcher::update(double time) {
@@ -47,6 +59,17 @@ void AnimationDispatcher::update(double time) {
 			animationList->mCounterToCancelability = animationStruct.mNonCancelableFrame*(60.0f / animationStruct.mFps);
 			animationList->mCurrentlyPlaying = animationList->mAnimationToPlay;
 			animationList->mAnimationToPlay = "";
+		}
+	}
+
+	for(aunteater::Node node : *mStatefulAnimationables)
+	{
+		auto sprite = node.get<Component::Sprite>().polySprite;
+		auto stillAnimation = &node.get<Component::AnimationStillFrame>();
+
+		if (stillAnimation->requestFrame > -1) {
+			sprite->setCurrentFrame(stillAnimation->requestFrame);
+			stillAnimation->requestFrame = -1;
 		}
 	}
 }

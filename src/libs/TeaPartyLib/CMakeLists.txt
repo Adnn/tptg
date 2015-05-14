@@ -17,6 +17,8 @@ set(${PROJECT_NAME}_HEADERS
     Archetypes/TriggersActors.h
     Components/ActionController.h
     Components/AnimationList.h
+    Components/AnimationStillFrame.h
+    Components/BallsPoint.h
     Components/CallbackOnActor.h
     Components/ClippedScene.h
     Components/Controller.h
@@ -53,6 +55,7 @@ set(${PROJECT_NAME}_HEADERS
     Systems/Move.h
     Systems/PhaseController.h
     Systems/Physics.h
+    Systems/PointVisualisation.h
     Systems/Trigger.h
     Systems/Tween.h
     Systems/Utilities.h
@@ -85,6 +88,7 @@ set(${PROJECT_NAME}_SOURCES
     Systems/Move.cpp
     Systems/PhaseController.cpp
     Systems/Physics.cpp
+    Systems/PointVisualisation.cpp
     Systems/Trigger.cpp
     Systems/Tween.cpp
 )

@@ -26,6 +26,7 @@ public:
     
 private:
     aunteater::Nodes mAnimationables;
+    aunteater::Nodes mStatefulAnimationables;
 };
 
 }} // namespace TeaParty::System
