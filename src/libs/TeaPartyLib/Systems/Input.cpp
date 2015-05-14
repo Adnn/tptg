@@ -50,8 +50,15 @@ void Input::update(double time)
 			}
 			else
 			{
-				//speed->vX = 0;
-				animation->mAnimationToPlay = "idle";
+				if (speed->vX > 0)
+				{
+					animation->mAnimationToPlay = "idle_right";
+				}
+				else
+				{
+					animation->mAnimationToPlay = "idle_left";
+				}
+					
 			}
 		}
 	}

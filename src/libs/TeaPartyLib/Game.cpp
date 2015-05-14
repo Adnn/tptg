@@ -96,7 +96,8 @@ Game::Game() :
 
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_left",2,30.0f));
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_right",2,30.0f));
-    mAnimations.push_back(std::make_unique<Structure::Animation>("idle",0,30.0f));
+    mAnimations.push_back(std::make_unique<Structure::Animation>("idle_left",0,30.0f));
+	mAnimations.push_back(std::make_unique<Structure::Animation>("idle_right", 0, 30.0f));
 
     aunteater::Entity player1;
 
@@ -130,10 +131,12 @@ Game::Game() :
 
     player1.get<Component::Inventory>()->addItemToInventory("penis",mEngine->getEntity("penis"));
 
+
     player1.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
-    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
-    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
-    mEngine->addEntity("player1", player1);
+	player1.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
+	player1.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
+	player1.get<Component::AnimationList>()->addAnimation(*mAnimations[3].get());
+	mEngine->addEntity("player1", player1);
     //*** End Player ***//
 
 	aunteater::Entity player2;
@@ -157,6 +160,7 @@ Game::Game() :
 	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
 	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
 	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
+	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[3].get());
 	mEngine->addEntity("player2", player2);
 
 	//*** End Player ***//
