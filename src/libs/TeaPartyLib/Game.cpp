@@ -102,7 +102,9 @@ Game::Game() :
 
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_left",2,30.0f));
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_right",2,30.0f));
-    mAnimations.push_back(std::make_unique<Structure::Animation>("idle",0,30.0f));
+    mAnimations.push_back(std::make_unique<Structure::Animation>("idle_left",0,30.0f));
+	mAnimations.push_back(std::make_unique<Structure::Animation>("idle_right", 0, 30.0f));
+	mAnimations.push_back(std::make_unique<Structure::Animation>("default", 0, 4.0f));
 
     aunteater::Entity player1;
 
@@ -136,32 +138,45 @@ Game::Game() :
 
     player1.get<Component::Inventory>()->addItemToInventory("penis",mEngine->getEntity("penis"));
 
+
     player1.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
     player1.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
     player1.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
+    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[3].get());
 
     player1.addComponent<Component::GamePhase>();
     mEngine->addEntity("player1", player1);
+
     //*** End Player ***//
 
     //*** Bagging mini game ***//
+    aunteater::Entity sleepyFace;
+    sleepyFace.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_deep.sprites"));
+    sleepyFace.addComponent<Component::Position>(X_ROOM/2., 0, LAYERS-1); // last layer, never displayed by the main phase
+    sleepyFace.addComponent<Component::AnimationList>("default");
+    sleepyFace.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
+    mEngine->addEntity("face1", sleepyFace);
+    
+    sleepyFace.get<Component::Sprite>()->polySprite->setSpriteByName("balls_deep");
+    sleepyFace.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
+    sleepyFace.get<Component::Sprite>()->polySprite->setScale(11, 11);
+    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(sleepyFace.get<Component::Sprite>()->polySprite.get());
+
     aunteater::Entity hairyCross;
-    hairyCross.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.xml"));
+    hairyCross.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_crosshair.sprites"));
     hairyCross.addComponent<Component::Position>(150, -50, LAYERS-1); // last layer, never displayed by the main phase
     hairyCross.addComponent<Component::ActionController>();
     hairyCross.addComponent<Component::Keyboard>();
     hairyCross.addComponent<Component::Displacement>();
-    hairyCross.addComponent<Component::Extent>();
+    hairyCross.addComponent<Component::Extent>(50, 50);
     hairyCross.addComponent<Component::Physics>();
     hairyCross.addComponent<Component::Speed>();
-    hairyCross.addComponent<Component::AnimationList>("idle");
-    hairyCross.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
-    hairyCross.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
-    hairyCross.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
+    hairyCross.addComponent<Component::AnimationList>("default");
+    hairyCross.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
 
     mEngine->addEntity("cross1", hairyCross);
-
-    hairyCross.get<Component::Sprite>()->polySprite->setSpriteStateByName("idle", 0, false);
+    hairyCross.get<Component::Sprite>()->polySprite->setSpriteByName("balls_crosshair");
+    hairyCross.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
     player1.get<Component::GamePhase>()->phaseRootEntity->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
 
     // CAN BE SHARED BY ALL ONE SCREEN GAMES
@@ -200,6 +215,7 @@ Game::Game() :
 	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
 	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
 	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
+	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[3].get());
 	mEngine->addEntity("player2", player2);
 
 	//*** End Player ***//
