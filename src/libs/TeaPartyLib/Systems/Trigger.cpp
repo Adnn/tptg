@@ -19,10 +19,10 @@ void Trigger::update(double time)
 {
     for (aunteater::Node actor : *mActors)
     {
-        const Component::Extent actorLimits = getBounding(actor);
+        const CollisionBox actorLimits = getBounding(actor);
         for (aunteater::Node trigger : *mTriggers)
         {
-            const Component::Extent triggerLimits = getBounding(trigger);
+            const CollisionBox triggerLimits = getBounding(trigger);
             if(testCollision(actorLimits, triggerLimits))
             {
                 const auto &actorActions = actor.get<Component::ActionController>();

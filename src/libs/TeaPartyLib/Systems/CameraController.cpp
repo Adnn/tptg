@@ -25,9 +25,12 @@ void CameraController::update(double aTime)
 {
     for (aunteater::Node &camera : *mCameras)
     {
-        Vec2 playerPos = camera.get<Component::PlayerReference>().player->get<Component::Position>()->coords;
-        Level::RoomSize size = mLevel->getARoom(playerPos.x);
-        double x = std::min(size.second - CAM_WIDTH/2., std::max(size.first + CAM_WIDTH/2., playerPos.x));
+        auto pos = camera.get<Component::PlayerReference>().player->get<Component::Position>();
+        Vec2 playerPos = pos->coords;
+        int playerZ = pos->z;
+        Level::RoomParams room = mLevel->getARoom(playerPos.x, playerZ);
+        double x = std::min(room.second - CAM_WIDTH/2., std::max(room.first + CAM_WIDTH/2., playerPos.x));
         camera.get<Component::Position>().coords.x = x;
+        camera.get<Component::Position>().z = playerZ;
     }
 }

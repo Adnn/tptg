@@ -29,19 +29,20 @@ private:
     Polycode::Entity *mSimulationRoot;
 };
 
-class CameraObserver : public aunteater::FamilyObserver
-{
-public:
-    CameraObserver(Polycode::Entity &aRoot) :
-            mSimulationRoot(&aRoot)
-    {}
-
-    virtual void addedNode(aunteater::Node &aNode) override;
-    virtual void removedNode(aunteater::Node &aNode) override;
-    
-private:
-    Polycode::Entity *mSimulationRoot;
-};
+/// \todo Remove if it does not prove usefull again
+//class CameraObserver : public aunteater::FamilyObserver
+//{
+//public:
+//    CameraObserver(Polycode::Entity &aRoot) :
+//            mSimulationRoot(&aRoot)
+//    {}
+//
+//    virtual void addedNode(aunteater::Node &aNode) override;
+//    virtual void removedNode(aunteater::Node &aNode) override;
+//    
+//private:
+//    Polycode::Entity *mSimulationRoot;
+//};
 
 class Display : public aunteater::System, public aunteater::FamilyObserver
 {
@@ -61,7 +62,9 @@ private:
     Polycode::Entity mSimulationRoot; // The actual scene is stored in the camera, to customize clipping, etc..
                                       // but the content of the simulation is common to all cameras : this data member
     ImageObserver mImageObserver = ImageObserver(mSimulationRoot);
-    CameraObserver mCameraObserver = CameraObserver(mSimulationRoot);
+    //CameraObserver mCameraObserver = CameraObserver(mSimulationRoot);
+
+    std::map<Polycode::SceneSprite *, int> mSpriteToZ;
 };
 
 }} // namespace TeaParty::System

@@ -22,18 +22,21 @@ void CollisionSolver::update(double time)
         const auto & moverDisplacement = mover.get<Component::Displacement>().coords;
         auto expectedPos = mover.get<Component::Position>().coords + moverDisplacement;
         const auto &moverExtent = mover.get<Component::Extent>();
-        const Component::Extent moverLimits = {expectedPos.x-moverExtent.left, expectedPos.x+moverExtent.right};
+        const CollisionBox moverLimits = {
+                                            {expectedPos.x-moverExtent.left, expectedPos.x+moverExtent.right},
+                                            mover.get<Component::Position>().z
+                                         };
 
         for (aunteater::Node obstacle : *mObstacles)
         {
             if( ! obstacle.getEntity()->has<Component::Displacement>()) // static objects first
             {
-                const Component::Extent obstacleLimits = getBounding(obstacle);
+                const CollisionBox obstacleLimits = getBounding(obstacle);
                 if(testCollision(moverLimits, obstacleLimits))
                 {
                     expectedPos.x +=  moverDisplacement.x > 0 ?
-                                        -1 * (moverLimits.right - obstacleLimits.left) :
-                                        obstacleLimits.right - moverLimits.left ;
+                                        -1 * (moverLimits.extent.right - obstacleLimits.extent.left) :
+                                        obstacleLimits.extent.right - moverLimits.extent.left ;
                 }
             }
         }

@@ -13,18 +13,29 @@
 
 namespace TeaParty { namespace System {
 
+struct CollisionBox
+{
+    Component::Extent extent;
+    int z;
+};
 
-inline TeaParty::Component::Extent getBounding(aunteater::Node &aNode)
+inline CollisionBox getBounding(aunteater::Node &aNode)
 {
     const auto & pos = aNode.get<Component::Position>().coords;
     const auto & extent = aNode.get<Component::Extent>();
-    return TeaParty::Component::Extent(pos.x-extent.left, pos.x+extent.right);
+    return {TeaParty::Component::Extent(pos.x-extent.left, pos.x+extent.right),
+            aNode.get<Component::Position>().z};
 }
 
-inline bool testCollision(const Component::Extent &aLhs, const Component::Extent &aRhs)
+inline bool testCollision_extent(const Component::Extent &aLhs, const Component::Extent &aRhs)
 {
     return ( (aLhs.right > aRhs.left && aLhs.left < aRhs.right)
           || (aLhs.left < aRhs.right && aLhs.right > aRhs.left));
+}
+
+inline bool testCollision(const CollisionBox &aLhs, const CollisionBox &aRhs)
+{
+    return (aLhs.z == aRhs.z) && (testCollision_extent(aLhs.extent, aRhs.extent));
 }
 
 

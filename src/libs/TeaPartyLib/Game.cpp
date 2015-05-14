@@ -54,6 +54,12 @@ using namespace TeaParty;
         room_brown.png
         room_double_mandala.png
         room_green.png
+        ZUP
+        room_green.png
+        room_brown.png
+        room_brown.png
+        room_brown.png
+        room_red.png
     )#";
 
 
@@ -67,8 +73,13 @@ Game::Game() :
     //initLevel();
 
     STFU(Display);
+    STFU(InventoryLayout);
+    STFU(Inventory);
+
     /**/STFU(KeyboardController); // not changing anything at the moment...
     STFU(Input);
+    STFU(Friction);
+    STFU(Physics);
     STFU(Move);
     STFU(CollisionSolver);
     STFU(Tween);
@@ -77,34 +88,30 @@ Game::Game() :
     STFU(AnimationDispatcher);
     STFU(Trigger);
 	STFU(Display);
-    STFU(InventoryLayout);
-    STFU(Inventory);
 
     //Everything depending on falling edge should be put before KeayboardController
-	STFU(KeyboardController);
-	STFU(Input);
-    STFU(Friction);
-    STFU(Physics);
-    STFU(Move);
-    STFU(HudDisplay);
+//STFU(KeyboardController);
+//STFU(Input);
+//STFU(Move);
+STFU(HudDisplay);
 
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_left",2,30.0f));
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_right",2,30.0f));
     mAnimations.push_back(std::make_unique<Structure::Animation>("idle",0,30.0f));
 
-    aunteater::Entity sprite;
+    aunteater::Entity player1;
 
     //*** Player Entity setup ***//
-    sprite.addComponent<Component::ActionController>();
-    sprite.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.xml"));
-    sprite.addComponent<Component::Position>(150, -50);
-    sprite.addComponent<Component::Displacement>();
-    sprite.addComponent<Component::Extent>();
-    sprite.addComponent<Component::Speed>();
-    sprite.addComponent<Component::Keyboard>();
-    sprite.addComponent<Component::AnimationList>("idle");
-    sprite.addComponent<Component::Physics>();
-    sprite.addComponent<Component::Inventory>();
+    player1.addComponent<Component::ActionController>();
+    player1.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.xml"));
+    player1.addComponent<Component::Position>(150, -50);
+    player1.addComponent<Component::Displacement>();
+    player1.addComponent<Component::Extent>();
+    player1.addComponent<Component::Speed>();
+    player1.addComponent<Component::Keyboard>();
+    player1.addComponent<Component::AnimationList>("idle");
+    player1.addComponent<Component::Physics>();
+    player1.addComponent<Component::Inventory>();
 
     aunteater::Entity itemYo;
     itemYo.addComponent<Component::HudItem>(new Polycode::SpriteSet("items.sprites"));
@@ -113,7 +120,7 @@ Game::Game() :
     itemYo.addComponent<Component::Position>(0,0);
     mEngine->addEntity("penis-like-sword",itemYo);
 
-    sprite.get<Component::Inventory>()->addItemToInventory("penis-like-sword",mEngine->getEntity("penis-like-sword"));
+    player1.get<Component::Inventory>()->addItemToInventory("penis-like-sword",mEngine->getEntity("penis-like-sword"));
 
     aunteater::Entity item;
     item.addComponent<Component::HudItem>(new Polycode::SpriteSet("items.sprites"));
@@ -122,31 +129,31 @@ Game::Game() :
 	item.addComponent<Component::Position>(0, 0);
     mEngine->addEntity("penis",item);
 
-    sprite.get<Component::Inventory>()->addItemToInventory("penis",mEngine->getEntity("penis"));
+    player1.get<Component::Inventory>()->addItemToInventory("penis",mEngine->getEntity("penis"));
 
-    sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
-    sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
-    sprite.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
-    mEngine->addEntity("player", sprite);
+    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
+    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
+    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
+    mEngine->addEntity("player1", player1);
     //*** End Player ***//
 
-	aunteater::Entity caca;
+	aunteater::Entity player2;
 
 	//*** Player Entity setup ***//
-	caca.addComponent<Component::ActionController>();
-	caca.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.xml"));
-	caca.addComponent<Component::Position>(500, -50);
-	caca.addComponent<Component::Displacement>();
-	caca.addComponent<Component::Extent>();
-	caca.addComponent<Component::Speed>();
-	caca.addComponent<Component::Keyboard>();
-	caca.addComponent<Component::AnimationList>("idle");
-	caca.addComponent<Component::Physics>();
+	player2.addComponent<Component::ActionController>();
+	player2.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.xml"));
+	player2.addComponent<Component::Position>(500, -50, 1);
+	player2.addComponent<Component::Displacement>();
+	player2.addComponent<Component::Extent>();
+	player2.addComponent<Component::Speed>();
+	player2.addComponent<Component::Keyboard>();
+	player2.addComponent<Component::AnimationList>("idle");
+	player2.addComponent<Component::Physics>();
 
-	caca.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
-	caca.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
-	caca.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
-	mEngine->addEntity("caca", caca);
+	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
+	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
+	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
+	mEngine->addEntity("player2", player2);
 	//*** End Player ***//
 
     //*** Player Camera setup ***//
@@ -158,12 +165,12 @@ Game::Game() :
             camera.addComponent<Component::Position>(0., 0.);
 			if (rowId % 2 == 0)
 			{
-				camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player"));
+				camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player1"));
 				camera.addComponent<Component::ClippedScene>(rowId, colId);
 			}
 			else 
 			{
-				camera.addComponent<Component::PlayerReference>(mEngine->getEntity("caca"));
+				camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player2"));
 				camera.addComponent<Component::ClippedScene>(rowId, colId);
 			}
             
