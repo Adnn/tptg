@@ -17,6 +17,7 @@
 #include "Components/TriggeringAction.h"
 #include "Components/HudItem.h"
 #include "Components/Inventory.h"
+#include "Components/Controller.h"
 #include "Systems/CameraController.h"
 #include "Systems/CollisionSolver.h"
 #include "Components/AnimationList.h"
@@ -24,6 +25,7 @@
 #include "Systems/Display.h"
 #include "Systems/Input.h"
 #include "Systems/KeyboardController.h"
+#include "Systems/ControllerController.h"
 #include "Systems/Move.h"
 #include "Systems/Trigger.h"
 #include "Systems/AnimationDispatcher.h"
@@ -67,9 +69,12 @@ Game::Game() :
     //initLevel();
 
     STFU(Display);
-    /**/STFU(KeyboardController); // not changing anything at the moment...
     STFU(Input);
     STFU(Move);
+	STFU(Friction);
+	STFU(Physics);
+	STFU(Move);
+	STFU(HudDisplay);
     STFU(CollisionSolver);
     STFU(Tween);
     // From here, everything have its position assigned for the next frame to display
@@ -82,11 +87,8 @@ Game::Game() :
 
     //Everything depending on falling edge should be put before KeayboardController
 	STFU(KeyboardController);
-	STFU(Input);
-    STFU(Friction);
-    STFU(Physics);
-    STFU(Move);
-    STFU(HudDisplay);
+    STFU(ControllerController);
+    
 
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_left",2,30.0f));
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_right",2,30.0f));
@@ -139,7 +141,11 @@ Game::Game() :
 	caca.addComponent<Component::Displacement>();
 	caca.addComponent<Component::Extent>();
 	caca.addComponent<Component::Speed>();
-	caca.addComponent<Component::Keyboard>();
+
+    if (Polycode::CoreServices::getInstance()->getCore()->getInput()->getNumJoysticks() > 0)
+    {
+        caca.addComponent<Component::Controller>(Polycode::CoreServices::getInstance()->getCore()->getInput()->getJoystickInfoByIndex(0));
+    }
 	caca.addComponent<Component::AnimationList>("idle");
 	caca.addComponent<Component::Physics>();
 
@@ -148,6 +154,7 @@ Game::Game() :
 	caca.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
 	mEngine->addEntity("caca", caca);
 	//*** End Player ***//
+
 
     //*** Player Camera setup ***//
     for(int rowId = 0; rowId != VP_ROWS; ++rowId)

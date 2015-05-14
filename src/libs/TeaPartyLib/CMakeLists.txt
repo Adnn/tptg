@@ -33,6 +33,7 @@ set(${PROJECT_NAME}_HEADERS
     Components/HudItem.h
     Components/Inventory.h
     Components/Tween.h
+    Components/Controller.h
     Game.h
     Level.h
     Systems/AnimationDispatcher.h
@@ -42,6 +43,7 @@ set(${PROJECT_NAME}_HEADERS
     Systems/Friction.h
     Systems/Input.h
     Systems/KeyboardController.h
+    Systems/ControllerController.h
     Systems/Move.h
     Systems/Physics.h
     Systems/Trigger.h
@@ -71,6 +73,7 @@ set(${PROJECT_NAME}_SOURCES
     Systems/Friction.cpp
     Systems/Input.cpp
     Systems/KeyboardController.cpp
+    Systems/ControllerController.cpp
     Systems/Move.cpp
     Systems/Physics.cpp
     Systems/Trigger.cpp
