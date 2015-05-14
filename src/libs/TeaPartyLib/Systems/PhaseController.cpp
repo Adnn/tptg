@@ -36,7 +36,7 @@ void PhaseController::update(double aTime)
         auto phase = camera.get<Component::SelectedPhase>().phase;
         if(phase == Component::Phase::DIPPING)
         {
-            replaceCameraRoot(camera, camera.get<Component::PlayerReference>().player->get<Component::GamePhase>()->phaseRootEntity.get());
+            replaceCameraRoot(camera, camera.get<Component::PlayerReference>().entity->get<Component::GamePhase>()->phaseRootEntity.get());
         }
     }
 }

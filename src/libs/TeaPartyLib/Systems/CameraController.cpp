@@ -25,7 +25,7 @@ void CameraController::update(double aTime)
 {
     for (aunteater::Node &camera : *mCameras)
     {
-        auto pos = camera.get<Component::PlayerReference>().player->get<Component::Position>();
+        auto pos = camera.get<Component::PlayerReference>().entity->get<Component::Position>();
         Vec2 playerPos = pos->coords;
         int playerZ = pos->z;
         Level::RoomParams room = mLevel->getARoom(playerPos.x, playerZ);

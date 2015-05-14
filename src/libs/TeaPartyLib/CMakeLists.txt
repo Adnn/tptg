@@ -27,6 +27,7 @@ set(${PROJECT_NAME}_HEADERS
     Components/Image.h
     Components/Inventory.h
     Components/Keyboard.h
+    Components/Pendular.h
     Components/Physics.h
     Components/PlayerReference.h
     Components/Position.h
@@ -51,6 +52,7 @@ set(${PROJECT_NAME}_HEADERS
     Systems/InventoryLayout.h
     Systems/KeyboardController.h
     Systems/Move.h
+    Systems/PendulumPhysics.h
     Systems/PhaseController.h
     Systems/Physics.h
     Systems/Trigger.h
@@ -67,6 +69,7 @@ set(${PROJECT_NAME}_SOURCES
     Archetypes/TriggersActors.cpp
     Components/ClippedScene.cpp
     Components/GamePhase.cpp
+    Components/Pendular.cpp
     Components/PlayerReference.cpp
     Components/SelectedPhase.cpp
     Game.cpp
@@ -83,6 +86,7 @@ set(${PROJECT_NAME}_SOURCES
     Systems/InventoryLayout.cpp
     Systems/KeyboardController.cpp
     Systems/Move.cpp
+    Systems/PendulumPhysics.cpp
     Systems/PhaseController.cpp
     Systems/Physics.cpp
     Systems/Trigger.cpp

@@ -21,13 +21,15 @@ namespace TeaParty { namespace Component {
 struct PlayerReference : public aunteater::Component
 {
     PlayerReference(aunteater::weak_entity aRefered) :
-        player(aRefered)
+        entity(aRefered)
     {}
 
-    aunteater::weak_entity player;
+    aunteater::weak_entity entity;
 private:
     COMP_CLONE(PlayerReference)
 };
+
+typedef PlayerReference PivotReference;
 
 }} // namespace TeaParty::Component
 

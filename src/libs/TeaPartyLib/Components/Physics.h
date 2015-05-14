@@ -21,6 +21,8 @@ public:
 
 	bool aIsOnGround;
 	std::vector<Vec2> mForces;
+    double mass;
+
 private:
 	COMP_CLONE(Physics)
 };

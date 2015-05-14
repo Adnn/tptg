@@ -12,6 +12,7 @@
 #include "Components/Keyboard.h"
 #include "Components/GamePhase.h"
 #include "Components/Image.h"
+#include "Components/Pendular.h"
 #include "Components/PlayerReference.h"
 #include "Components/Position.h"
 #include "Components/SelectedPhase.h"
@@ -162,7 +163,29 @@ Game::Game() :
     sleepyFace.get<Component::Sprite>()->polySprite->setScale(11, 11);
     player1.get<Component::GamePhase>()->phaseRootEntity->addChild(sleepyFace.get<Component::Sprite>()->polySprite.get());
 
+    //*** Pivot ***//
+    aunteater::Entity pivot;
+    pivot.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_crosshair.sprites"));
+    pivot.addComponent<Component::Position>(200, -20, LAYERS-1); // last layer, never displayed by the main phase
+    pivot.addComponent<Component::ActionController>();
+    pivot.addComponent<Component::Keyboard>();
+    pivot.addComponent<Component::Displacement>();
+    pivot.addComponent<Component::Extent>(50, 50);
+    pivot.addComponent<Component::Physics>();
+    pivot.addComponent<Component::Speed>();
+    pivot.addComponent<Component::AnimationList>("default");
+    pivot.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
+
+    mEngine->addEntity("pivot1", pivot);
+    pivot.get<Component::Sprite>()->polySprite->setSpriteByName("balls_crosshair");
+    pivot.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
+    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(pivot.get<Component::Sprite>()->polySprite.get());
+
+    //*** Crosshair ***//
     aunteater::Entity hairyCross;
+    hairyCross.addComponent<Component::Pendular>(0., 100);
+    hairyCross.addComponent<Component::PivotReference>(mEngine->getEntity("pivot1"));
+
     hairyCross.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_crosshair.sprites"));
     hairyCross.addComponent<Component::Position>(150, -20, LAYERS-1); // last layer, never displayed by the main phase
     hairyCross.addComponent<Component::ActionController>();
@@ -171,13 +194,16 @@ Game::Game() :
     hairyCross.addComponent<Component::Extent>(50, 50);
     hairyCross.addComponent<Component::Physics>();
     hairyCross.addComponent<Component::Speed>();
-    hairyCross.addComponent<Component::AnimationList>("default");
-    hairyCross.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
+    //hairyCross.addComponent<Component::AnimationList>("default");
+    //hairyCross.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
 
     mEngine->addEntity("cross1", hairyCross);
     hairyCross.get<Component::Sprite>()->polySprite->setSpriteByName("balls_crosshair");
     hairyCross.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
     player1.get<Component::GamePhase>()->phaseRootEntity->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
+
+
+
 
     // CAN BE SHARED BY ALL ONE SCREEN GAMES
     aunteater::Entity leftBorder;
