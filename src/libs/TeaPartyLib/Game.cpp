@@ -33,6 +33,7 @@
 #include "Systems/ControllerController.h"
 #include "Systems/Move.h"
 #include "Systems/Trigger.h"
+#include "Systems/PendulumPhysics.h"
 #include "Systems/PhaseController.h"
 #include "Systems/Physics.h"
 #include "Systems/Friction.h"
@@ -79,12 +80,9 @@ Game::Game() :
     mLevel = std::make_unique<Level>(defStream, *mEngine);
     //initLevel();
 
-    STFU(Display);
     STFU(Input);
     STFU(Friction);
-    STFU(Physics);
-    STFU(Move);
-    STFU(Friction);
+    STFU(PendulumPhysics)
     STFU(Physics);
     STFU(Move);
     STFU(HudDisplay);
@@ -94,7 +92,6 @@ Game::Game() :
     STFU1(CameraController, mLevel.get());
     STFU(AnimationDispatcher);
     STFU(Trigger);
-    STFU(Display);
     STFU(Display);
     STFU(PhaseController); // must come after display...
     
@@ -165,8 +162,8 @@ Game::Game() :
 
     //*** Pivot ***//
     aunteater::Entity pivot;
-    pivot.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_crosshair.sprites"));
-    pivot.addComponent<Component::Position>(200, -20, LAYERS-1); // last layer, never displayed by the main phase
+    pivot.addComponent<Component::Sprite>(new Polycode::SpriteSet("cross.sprites"));
+    pivot.addComponent<Component::Position>(150, -20, LAYERS-1); // last layer, never displayed by the main phase
     pivot.addComponent<Component::ActionController>();
     pivot.addComponent<Component::Keyboard>();
     pivot.addComponent<Component::Displacement>();
@@ -177,30 +174,30 @@ Game::Game() :
     pivot.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
 
     mEngine->addEntity("pivot1", pivot);
-    pivot.get<Component::Sprite>()->polySprite->setSpriteByName("balls_crosshair");
+    pivot.get<Component::Sprite>()->polySprite->setSpriteByName("cross");
     pivot.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
+    //pivot.get<Component::Sprite>()->polySprite->setScale(10, 10);
     player1.get<Component::GamePhase>()->phaseRootEntity->addChild(pivot.get<Component::Sprite>()->polySprite.get());
 
     //*** Crosshair ***//
     aunteater::Entity hairyCross;
-    hairyCross.addComponent<Component::Pendular>(0., 100);
+    hairyCross.addComponent<Component::Pendular>(.5, 0.5);
     hairyCross.addComponent<Component::PivotReference>(mEngine->getEntity("pivot1"));
 
     hairyCross.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_crosshair.sprites"));
-    hairyCross.addComponent<Component::Position>(150, -20, LAYERS-1); // last layer, never displayed by the main phase
-    hairyCross.addComponent<Component::ActionController>();
-    hairyCross.addComponent<Component::Keyboard>();
-    hairyCross.addComponent<Component::Displacement>();
-    hairyCross.addComponent<Component::Extent>(50, 50);
-    hairyCross.addComponent<Component::Physics>();
-    hairyCross.addComponent<Component::Speed>();
+    hairyCross.addComponent<Component::Position>(0, 0, LAYERS-1); // last layer, never displayed by the main phase
+//    hairyCross.addComponent<Component::Displacement>();
+//    hairyCross.addComponent<Component::Extent>(0, 0);
+//    hairyCross.addComponent<Component::Speed>();
+    hairyCross.addComponent<Component::Physics>(100.2);
     //hairyCross.addComponent<Component::AnimationList>("default");
     //hairyCross.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
 
     mEngine->addEntity("cross1", hairyCross);
     hairyCross.get<Component::Sprite>()->polySprite->setSpriteByName("balls_crosshair");
     hairyCross.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
-    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
+    //player1.get<Component::GamePhase>()->phaseRootEntity->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
+    pivot.get<Component::Sprite>()->polySprite->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
 
 
 

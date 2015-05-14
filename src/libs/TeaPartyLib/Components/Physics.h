@@ -10,8 +10,9 @@ namespace TeaParty { namespace Component {
 class Physics : public aunteater::Component
 {
 public:
-	Physics() :
-		aIsOnGround(true)
+	Physics(double aMass=0) :
+		aIsOnGround(true),
+		mass(aMass)
 	{}
 
 	void addForce(Vec2 aForce)

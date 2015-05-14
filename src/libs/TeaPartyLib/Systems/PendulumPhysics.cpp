@@ -28,7 +28,8 @@ struct NodePendulum
 const ArchetypeTypeSet NodePendulum::gComponentTypes = {
     &typeid(Component::Pendular),
     &typeid(Component::Physics),
-    &typeid(Component::PivotReference)
+    &typeid(Component::PivotReference),
+    &typeid(Component::Position)
 };
 
 void PendulumPhysics::addedToEngine(Engine &aEngine)
@@ -45,7 +46,8 @@ void PendulumPhysics::update(double aTime)
         aunteater::weak_entity pivot = pendulum.get<Component::PivotReference>().entity;
         double horizontalSpeed = pivot->get<Component::Speed>()->vX;
         double & previousPivotSpeed = pendulum.get<Component::Pendular>().pivotPreviousSpeed.x;
-        double horizontalAccel = (horizontalSpeed - previousPivotSpeed) / frameTime;
+        double horizontalAccel = (-horizontalSpeed + previousPivotSpeed) / frameTime;
+        horizontalAccel = -horizontalAccel * 0.1;
 
         double & thetaSpeed = pendulum.get<Component::Pendular>().thetaSpeed;
         double & theta = pendulum.get<Component::Pendular>().theta;
@@ -53,13 +55,19 @@ void PendulumPhysics::update(double aTime)
         double b = pendulum.get<Component::Pendular>().damping;
         double m = pendulum.get<Component::Physics>().mass;
 
-        double thetaAccel = -std::cos(theta)/L*horizontalAccel - b/(m*std::pow(L, 2)) * thetaSpeed - 9.8/L * std::sin(theta);
+        double thetaAccel = -std::cos(theta)/L*horizontalAccel - b/*/(m*std::pow(L, 2))*/ * thetaSpeed - 9.8/L * std::sin(theta);
+
+//        std::cout << "movement pivot:" << -std::cos(theta)/L*horizontalAccel << " | damping : " << - b/(m*std::pow(L, 2)) * thetaSpeed<< " | gravity : " << -9.8/L * std::sin(theta)<< std::endl;
+//        std::cout << "theat:" << theta << " | theta' : " << thetaSpeed << " | theta'' " << thetaAccel << std::endl;
 
         // update previous speed, theta speed, theta
         previousPivotSpeed = horizontalSpeed;
         thetaSpeed += thetaAccel * frameTime;
         theta += thetaSpeed * frameTime;
 
-        pendulum.get<Component::Physics>().mForces.push_back({-m*L*std::sin(thetaAccel), 0.});
+        double & x = pendulum.get<Component::Position>().coords.x;
+        x = std::sin(theta) * L*200;
+        //pendulum.get<Component::Physics>().mForces.push_back({-m*L*std::sin(thetaAccel), 0.});
+        //pendulum.get<Component::Physics>().mForces.push_back({m*horizontalAccel, 0.});
     }
 }

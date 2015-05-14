@@ -34,7 +34,7 @@ void Physics::update(double time) {
 
 		for(Vec2 force : physics->mForces)
 		{
-			speed->vX += force.x*(13.0f/1000.0f);
+			speed->vX += force.x*(1/60.);
 		}
         physics->mForces.clear();
 	}
