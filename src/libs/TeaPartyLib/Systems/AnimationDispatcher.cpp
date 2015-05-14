@@ -39,13 +39,14 @@ void AnimationDispatcher::update(double time) {
 
 		if (!animationList->mAnimationToPlay.empty() &&
 			animationList->mAnimationToPlay != animationList->mCurrentlyPlaying &&
-			animationList->mCounterToCancelability <= 0)
+			animationList->mCounterToCancelability <= 0 &&
+			animationList->mAnimationList.find(animationList->mAnimationToPlay) != animationList->mAnimationList.end())
 		{
-				sprite->setSpriteStateByName(animationList->mAnimationToPlay,0,false);
-				Structure::Animation animationStruct = animationList->mAnimationList.at(animationList->mAnimationToPlay);
-				animationList->mCounterToCancelability = animationStruct.mNonCancelableFrame*(60.0f / animationStruct.mFps);
-				animationList->mCurrentlyPlaying = animationList->mAnimationToPlay;
-				animationList->mAnimationToPlay = "";
+			sprite->setSpriteStateByName(animationList->mAnimationToPlay,0,false);
+			Structure::Animation animationStruct = animationList->mAnimationList.at(animationList->mAnimationToPlay);
+			animationList->mCounterToCancelability = animationStruct.mNonCancelableFrame*(60.0f / animationStruct.mFps);
+			animationList->mCurrentlyPlaying = animationList->mAnimationToPlay;
+			animationList->mAnimationToPlay = "";
 		}
 	}
 }
