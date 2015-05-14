@@ -13,6 +13,7 @@
 #include "../Components/ClippedScene.h"
 #include "../Components/PlayerReference.h"
 #include "../Components/Position.h"
+#include "../Components/SelectedPhase.h"
 
 namespace TeaParty { namespace Archetype {
 

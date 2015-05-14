@@ -19,41 +19,44 @@ set(${PROJECT_NAME}_HEADERS
     Components/AnimationList.h
     Components/CallbackOnActor.h
     Components/ClippedScene.h
+    Components/Controller.h
     Components/Displacement.h
     Components/Extent.h
+    Components/GamePhase.h
+    Components/HudItem.h
     Components/Image.h
+    Components/Inventory.h
     Components/Keyboard.h
     Components/Physics.h
     Components/PlayerReference.h
     Components/Position.h
+    Components/SelectedPhase.h
     Components/Speed.h
     Components/Sprite.h
     Components/Static.h
     Components/TriggeringAction.h
-    Components/HudItem.h
-    Components/Inventory.h
     Components/Tween.h
-    Components/Controller.h
     Game.h
+    InventoryStruct.h
     Level.h
     Systems/AnimationDispatcher.h
     Systems/CameraController.h
     Systems/CollisionSolver.h
+    Systems/ControllerController.h
     Systems/Display.h
     Systems/Friction.h
-    Systems/Input.h
-    Systems/KeyboardController.h
-    Systems/ControllerController.h
-    Systems/Move.h
-    Systems/Physics.h
-    Systems/Trigger.h
-    Systems/Utilities.h
     Systems/HudDisplay.h
+    Systems/Input.h
     Systems/Inventory.h
     Systems/InventoryLayout.h
+    Systems/KeyboardController.h
+    Systems/Move.h
+    Systems/PhaseController.h
+    Systems/Physics.h
+    Systems/Trigger.h
     Systems/Tween.h
+    Systems/Utilities.h
     Vec2.h
-    InventoryStruct.h
     globals.h
 )
 
@@ -63,23 +66,26 @@ set(${PROJECT_NAME}_SOURCES
     Archetypes/NodeCamera.cpp
     Archetypes/TriggersActors.cpp
     Components/ClippedScene.cpp
+    Components/GamePhase.cpp
     Components/PlayerReference.cpp
+    Components/SelectedPhase.cpp
     Game.cpp
     Level.cpp
     Systems/AnimationDispatcher.cpp
     Systems/CameraController.cpp
     Systems/CollisionSolver.cpp
+    Systems/ControllerController.cpp
     Systems/Display.cpp
     Systems/Friction.cpp
+    Systems/HudDisplay.cpp
     Systems/Input.cpp
-    Systems/KeyboardController.cpp
-    Systems/ControllerController.cpp
-    Systems/Move.cpp
-    Systems/Physics.cpp
-    Systems/Trigger.cpp
     Systems/Inventory.cpp
     Systems/InventoryLayout.cpp
-    Systems/HudDisplay.cpp
+    Systems/KeyboardController.cpp
+    Systems/Move.cpp
+    Systems/PhaseController.cpp
+    Systems/Physics.cpp
+    Systems/Trigger.cpp
     Systems/Tween.cpp
 )
 

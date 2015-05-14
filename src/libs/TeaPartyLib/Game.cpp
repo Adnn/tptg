@@ -6,29 +6,33 @@
 #include "Components/AnimationList.h"
 #include "Components/CallbackOnActor.h"
 #include "Components/ClippedScene.h"
+#include "Components/Controller.h"
 #include "Components/Displacement.h"
 #include "Components/Extent.h"
 #include "Components/Keyboard.h"
+#include "Components/GamePhase.h"
 #include "Components/Image.h"
 #include "Components/PlayerReference.h"
 #include "Components/Position.h"
+#include "Components/SelectedPhase.h"
 #include "Components/Sprite.h"
 #include "Components/Speed.h"
 #include "Components/TriggeringAction.h"
 #include "Components/HudItem.h"
 #include "Components/Inventory.h"
-#include "Components/Controller.h"
+#include "Components/Physics.h"
+#include "Components/Static.h"
+
 #include "Systems/CameraController.h"
 #include "Systems/CollisionSolver.h"
-#include "Components/AnimationList.h"
-#include "Components/Physics.h"
 #include "Systems/Display.h"
 #include "Systems/Input.h"
+#include "Systems/AnimationDispatcher.h"
 #include "Systems/KeyboardController.h"
 #include "Systems/ControllerController.h"
 #include "Systems/Move.h"
 #include "Systems/Trigger.h"
-#include "Systems/AnimationDispatcher.h"
+#include "Systems/PhaseController.h"
 #include "Systems/Physics.h"
 #include "Systems/Friction.h"
 #include "Systems/Inventory.h"
@@ -79,19 +83,21 @@ Game::Game() :
     STFU(Friction);
     STFU(Physics);
     STFU(Move);
-	STFU(Friction);
-	STFU(Physics);
-	STFU(Move);
-	STFU(HudDisplay);
+    STFU(Friction);
+    STFU(Physics);
+    STFU(Move);
+    STFU(HudDisplay);
     STFU(CollisionSolver);
     STFU(Tween);
     // From here, everything have its position assigned for the next frame to display
     STFU1(CameraController, mLevel.get());
     STFU(AnimationDispatcher);
     STFU(Trigger);
-	STFU(Display);
-
-	STFU(KeyboardController);
+    STFU(Display);
+    STFU(Display);
+    STFU(PhaseController); // must come after display...
+    
+    STFU(KeyboardController);
     STFU(ControllerController);
 
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_left",2,30.0f));
@@ -133,8 +139,45 @@ Game::Game() :
     player1.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
     player1.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
     player1.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
+
+    player1.addComponent<Component::GamePhase>();
     mEngine->addEntity("player1", player1);
     //*** End Player ***//
+
+    //*** Bagging mini game ***//
+    aunteater::Entity hairyCross;
+    hairyCross.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.xml"));
+    hairyCross.addComponent<Component::Position>(150, -50, LAYERS-1); // last layer, never displayed by the main phase
+    hairyCross.addComponent<Component::ActionController>();
+    hairyCross.addComponent<Component::Keyboard>();
+    hairyCross.addComponent<Component::Displacement>();
+    hairyCross.addComponent<Component::Extent>();
+    hairyCross.addComponent<Component::Physics>();
+    hairyCross.addComponent<Component::Speed>();
+    hairyCross.addComponent<Component::AnimationList>("idle");
+    hairyCross.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
+    hairyCross.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
+    hairyCross.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
+
+    mEngine->addEntity("cross1", hairyCross);
+
+    hairyCross.get<Component::Sprite>()->polySprite->setSpriteStateByName("idle", 0, false);
+    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
+
+    // CAN BE SHARED BY ALL ONE SCREEN GAMES
+    aunteater::Entity leftBorder;
+    leftBorder.addComponent<Component::Extent>(10., 10.);// because we do not want to be able to cross in less than 1 frame
+    leftBorder.addComponent<Component::Position>(0., 0., LAYERS-1);
+    leftBorder.addComponent<Component::Static>();
+    mEngine->addEntity(leftBorder);
+
+    aunteater::Entity rightBorder;
+    rightBorder.addComponent<Component::Extent>(10., 10.);// because we do not want to be able to cross in less than 1 frame
+    rightBorder.addComponent<Component::Position>(X_ROOM, 0., LAYERS-1);
+    rightBorder.addComponent<Component::Static>();
+    mEngine->addEntity(rightBorder);
+
+
 
 	aunteater::Entity player2;
 
@@ -169,8 +212,10 @@ Game::Game() :
         {
             aunteater::Entity camera;
             camera.addComponent<Component::Position>(0., 0.);
+            camera.addComponent<Component::SelectedPhase>();
 			if (rowId % 2 == 0)
 			{
+                camera.get<Component::SelectedPhase>()->phase = Component::Phase::DIPPING;
 				camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player1"));
 				camera.addComponent<Component::ClippedScene>(rowId, colId);
 			}
