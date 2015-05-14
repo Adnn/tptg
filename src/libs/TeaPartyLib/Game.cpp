@@ -156,7 +156,7 @@ Game::Game() :
     sleepyFace.addComponent<Component::AnimationList>("default");
     sleepyFace.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
     mEngine->addEntity("face1", sleepyFace);
-    
+
     sleepyFace.get<Component::Sprite>()->polySprite->setSpriteByName("balls_deep");
     sleepyFace.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
     sleepyFace.get<Component::Sprite>()->polySprite->setScale(11, 11);
@@ -164,7 +164,7 @@ Game::Game() :
 
     aunteater::Entity hairyCross;
     hairyCross.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_crosshair.sprites"));
-    hairyCross.addComponent<Component::Position>(150, -50, LAYERS-1); // last layer, never displayed by the main phase
+    hairyCross.addComponent<Component::Position>(150, -20, LAYERS-1); // last layer, never displayed by the main phase
     hairyCross.addComponent<Component::ActionController>();
     hairyCross.addComponent<Component::Keyboard>();
     hairyCross.addComponent<Component::Displacement>();
