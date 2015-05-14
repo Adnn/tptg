@@ -1,7 +1,7 @@
 #include "Input.h"
 
 #include "../Components/Speed.h"
-#include "../Components/Keyboard.h"
+#include "../Components/ActionController.h"
 #include "../Components/AnimationList.h"
 
 #include <aunteater/Engine.h>
@@ -16,7 +16,7 @@ public:
 };
 
 const ArchetypeTypeSet NodeControl::gComponentTypes =
-    { &typeid(TeaParty::Component::Keyboard),
+    { &typeid(TeaParty::Component::ActionController),
       &typeid(TeaParty::Component::Speed),
       &typeid(TeaParty::Component::AnimationList) };
 
@@ -31,19 +31,19 @@ void Input::addedToEngine(aunteater::Engine &aEngine)
 
 void Input::update(double time)
 {
-	Polycode::CoreInput * keyboard = Polycode::CoreServices::getInstance()->getCore()->getInput();
 	for (aunteater::Node node : *mNodeList)
 	{
 		auto speed = &node.get<Component::Speed>();
 		auto animation = &node.get<Component::AnimationList>();
+		auto actionController = &node.get<Component::ActionController>();
 		if (animation->mCounterToCancelability <= 0)
 		{
-			if (keyboard->getKeyState(Polycode::KEY_LEFT))
+			if (isDown(actionController->left))
 			{
 				speed->vX = -BASE_SPEED;
 				animation->mAnimationToPlay = "run_left";
 			}
-			else if (keyboard->getKeyState(Polycode::KEY_RIGHT))
+			else if (isDown(actionController->right))
 			{
 				speed->vX = BASE_SPEED;
 				animation->mAnimationToPlay = "run_right";

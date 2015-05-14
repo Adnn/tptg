@@ -17,6 +17,7 @@
 #include "Components/TriggeringAction.h"
 #include "Components/HudItem.h"
 #include "Components/Inventory.h"
+#include "Components/Controller.h"
 #include "Systems/CameraController.h"
 #include "Systems/CollisionSolver.h"
 #include "Components/AnimationList.h"
@@ -24,6 +25,7 @@
 #include "Systems/Display.h"
 #include "Systems/Input.h"
 #include "Systems/KeyboardController.h"
+#include "Systems/ControllerController.h"
 #include "Systems/Move.h"
 #include "Systems/Trigger.h"
 #include "Systems/AnimationDispatcher.h"
@@ -73,14 +75,14 @@ Game::Game() :
     //initLevel();
 
     STFU(Display);
-    STFU(InventoryLayout);
-    STFU(Inventory);
-
-    /**/STFU(KeyboardController); // not changing anything at the moment...
     STFU(Input);
     STFU(Friction);
     STFU(Physics);
     STFU(Move);
+	STFU(Friction);
+	STFU(Physics);
+	STFU(Move);
+	STFU(HudDisplay);
     STFU(CollisionSolver);
     STFU(Tween);
     // From here, everything have its position assigned for the next frame to display
@@ -89,11 +91,8 @@ Game::Game() :
     STFU(Trigger);
 	STFU(Display);
 
-    //Everything depending on falling edge should be put before KeayboardController
-//STFU(KeyboardController);
-//STFU(Input);
-//STFU(Move);
-STFU(HudDisplay);
+	STFU(KeyboardController);
+    STFU(ControllerController);
 
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_left",2,30.0f));
     mAnimations.push_back(std::make_unique<Structure::Animation>("run_right",2,30.0f));
@@ -146,7 +145,12 @@ STFU(HudDisplay);
 	player2.addComponent<Component::Displacement>();
 	player2.addComponent<Component::Extent>();
 	player2.addComponent<Component::Speed>();
-	player2.addComponent<Component::Keyboard>();
+
+    if (Polycode::CoreServices::getInstance()->getCore()->getInput()->getNumJoysticks() > 0)
+    {
+        player2.addComponent<Component::Controller>(Polycode::CoreServices::getInstance()->getCore()->getInput()->getJoystickInfoByIndex(0));
+    }
+	//player2.addComponent<Component::Keyboard>();
 	player2.addComponent<Component::AnimationList>("idle");
 	player2.addComponent<Component::Physics>();
 
@@ -154,7 +158,9 @@ STFU(HudDisplay);
 	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
 	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
 	mEngine->addEntity("player2", player2);
+
 	//*** End Player ***//
+
 
     //*** Player Camera setup ***//
     for(int rowId = 0; rowId != VP_ROWS; ++rowId)
