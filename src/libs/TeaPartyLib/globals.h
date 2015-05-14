@@ -17,3 +17,5 @@
 #define PORTAL_EXTENT 40.
 
 #define LAYERS 4
+
+#define MAX_POINT 1000.0

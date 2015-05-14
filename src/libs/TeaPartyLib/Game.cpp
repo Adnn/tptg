@@ -4,6 +4,8 @@
 
 #include "Components/ActionController.h"
 #include "Components/AnimationList.h"
+#include "Components/AnimationStillFrame.h"
+#include "Components/BallsPoint.h"
 #include "Components/CallbackOnActor.h"
 #include "Components/ClippedScene.h"
 #include "Components/Controller.h"
@@ -36,6 +38,8 @@
 #include "Systems/PendulumPhysics.h"
 #include "Systems/PhaseController.h"
 #include "Systems/Physics.h"
+#include "Systems/PointCounter.h"
+#include "Systems/PointVisualisation.h"
 #include "Systems/Friction.h"
 #include "Systems/Inventory.h"
 #include "Systems/InventoryLayout.h"
@@ -94,6 +98,8 @@ Game::Game() :
     STFU(Trigger);
     STFU(Display);
     STFU(PhaseController); // must come after display...
+	STFU(PointVisualisation);
+	STFU(PointCounter);
     
     STFU(KeyboardController);
     STFU(ControllerController);
@@ -179,13 +185,24 @@ Game::Game() :
     //pivot.get<Component::Sprite>()->polySprite->setScale(10, 10);
     player1.get<Component::GamePhase>()->phaseRootEntity->addChild(pivot.get<Component::Sprite>()->polySprite.get());
 
+    aunteater::Entity point;
+    point.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_deep_counter.sprites"));
+    point.addComponent<Component::Position>(X_ROOM - 50, Y_ROOM/2 - 50, LAYERS-1); // last layer, never displayed by the main phase
+    point.addComponent<Component::AnimationStillFrame>();
+	point.addComponent<Component::BallsPoint>();
+    point.get<Component::Sprite>()->polySprite->setSpriteByName("balls_deep_counter");
+    point.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
+    mEngine->addEntity("pointCounter1", point);
+	point.get<Component::Sprite>()->polySprite->setScale(3, 3);
+    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(point.get<Component::Sprite>()->polySprite.get());
+
     //*** Crosshair ***//
     aunteater::Entity hairyCross;
-    hairyCross.addComponent<Component::Pendular>(.5, 0.5);
+    hairyCross.addComponent<Component::Pendular>(.5, 0.5, mEngine->getEntity("pointCounter1"));
     hairyCross.addComponent<Component::PivotReference>(mEngine->getEntity("pivot1"));
 
     hairyCross.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_crosshair.sprites"));
-    hairyCross.addComponent<Component::Position>(0, 0, LAYERS-1); // last layer, never displayed by the main phase
+    hairyCross.addComponent<Component::Position>(0, -20, LAYERS-1); // last layer, never displayed by the main phase
 //    hairyCross.addComponent<Component::Displacement>();
 //    hairyCross.addComponent<Component::Extent>(0, 0);
 //    hairyCross.addComponent<Component::Speed>();
@@ -196,8 +213,9 @@ Game::Game() :
     mEngine->addEntity("cross1", hairyCross);
     hairyCross.get<Component::Sprite>()->polySprite->setSpriteByName("balls_crosshair");
     hairyCross.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
-    //player1.get<Component::GamePhase>()->phaseRootEntity->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
-    pivot.get<Component::Sprite>()->polySprite->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
+
+    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
+    //pivot.get<Component::Sprite>()->polySprite->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
 
 
 

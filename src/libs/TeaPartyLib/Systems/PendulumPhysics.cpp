@@ -66,7 +66,7 @@ void PendulumPhysics::update(double aTime)
         theta += thetaSpeed * frameTime;
 
         double & x = pendulum.get<Component::Position>().coords.x;
-        x = std::sin(theta) * L*200;
+        x = pivot->get<Component::Position>()->coords.x + std::sin(theta) * L*200;
         //pendulum.get<Component::Physics>().mForces.push_back({-m*L*std::sin(thetaAccel), 0.});
         //pendulum.get<Component::Physics>().mForces.push_back({m*horizontalAccel, 0.});
     }

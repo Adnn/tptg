@@ -20,17 +20,20 @@ namespace TeaParty { namespace Component {
 
 struct Pendular : public aunteater::Component
 {
-    Pendular (double aLength, double aDamping) :
+    Pendular (double aLength, double aDamping, aunteater::weak_entity point) :
               length(aLength),
-              damping(aDamping)
+              damping(aDamping),
+              pointCounter(point)
     {}
 
     const double length;
     const double damping;
+    aunteater::weak_entity pointCounter;
 
     double theta=0.;
     double thetaSpeed=0.;
     Vec2 pivotPreviousSpeed = {0., 0.};
+
 
 private:
     COMP_CLONE(Pendular)
