@@ -11,11 +11,13 @@
 #include "Components/Controller.h"
 #include "Components/Displacement.h"
 #include "Components/Extent.h"
+#include "Components/Index.h"
 #include "Components/Keyboard.h"
 #include "Components/GamePhase.h"
 #include "Components/Image.h"
 #include "Components/Pendular.h"
 #include "Components/PlayerReference.h"
+#include "Components/PointsTarget.h"
 #include "Components/Position.h"
 #include "Components/SelectedPhase.h"
 #include "Components/Sprite.h"
@@ -39,6 +41,7 @@
 #include "Systems/PhaseController.h"
 #include "Systems/Physics.h"
 #include "Systems/PointCounter.h"
+#include "Systems/PointsTrigger.h"
 #include "Systems/PointVisualisation.h"
 #include "Systems/Friction.h"
 #include "Systems/Inventory.h"
@@ -102,6 +105,7 @@ Game::Game() :
     STFU(PhaseController); // must come after display...
 	STFU(PointVisualisation);
 	STFU(PointCounter);
+	STFU(PointsTrigger)
     
     STFU(KeyboardController);
     STFU(ControllerController);
@@ -193,11 +197,14 @@ Game::Game() :
     point.addComponent<Component::Position>(X_ROOM - 50, Y_ROOM/2 - 50, LAYERS-1); // last layer, never displayed by the main phase
     point.addComponent<Component::AnimationStillFrame>();
 	point.addComponent<Component::BallsPoint>();
+    //point.addComponent<Component::PointsTarget>(MAX_POINT);
     point.get<Component::Sprite>()->polySprite->setSpriteByName("balls_deep_counter");
     point.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
     mEngine->addEntity("pointCounter1", point);
 	point.get<Component::Sprite>()->polySprite->setScale(3, 3);
     player1.get<Component::GamePhase>()->phaseRootEntity->addChild(point.get<Component::Sprite>()->polySprite.get());
+
+    player1.addComponent<Component::Index>(1, mEngine->getEntity("pointCounter1"));
 
     //*** Crosshair ***//
     aunteater::Entity hairyCross;

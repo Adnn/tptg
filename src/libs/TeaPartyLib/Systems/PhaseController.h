@@ -25,6 +25,7 @@ public:
 
 private:
     aunteater::Nodes mCameras;
+    aunteater::Engine *mEngine;
 };
 
 }} // namespace TeaParty::System

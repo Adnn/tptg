@@ -19,6 +19,7 @@ set(${PROJECT_NAME}_HEADERS
     Components/AnimationList.h
     Components/AnimationStillFrame.h
     Components/BallsPoint.h
+    Components/CallbackNoParam.h
     Components/CallbackOnActor.h
     Components/ClippedScene.h
     Components/Controller.h
@@ -27,11 +28,13 @@ set(${PROJECT_NAME}_HEADERS
     Components/GamePhase.h
     Components/HudItem.h
     Components/Image.h
+    Components/Index.h
     Components/Inventory.h
     Components/Keyboard.h
     Components/Pendular.h
     Components/Physics.h
     Components/PlayerReference.h
+    Components/PointsTarget.h
     Components/Position.h
     Components/SelectedPhase.h
     Components/Speed.h
@@ -59,6 +62,7 @@ set(${PROJECT_NAME}_HEADERS
     Systems/Physics.h
     Systems/PointCounter.h
     Systems/PointVisualisation.h
+    Systems/PointsTrigger.h
     Systems/Trigger.h
     Systems/Tween.h
     Systems/Utilities.h
@@ -71,10 +75,13 @@ set(${PROJECT_NAME}_SOURCES
     Archetypes/Colliders.cpp
     Archetypes/NodeCamera.cpp
     Archetypes/TriggersActors.cpp
+    Components/CallbackNoParam.cpp
     Components/ClippedScene.cpp
     Components/GamePhase.cpp
+    Components/Index.cpp
     Components/Pendular.cpp
     Components/PlayerReference.cpp
+    Components/PointsTarget.cpp
     Components/SelectedPhase.cpp
     Game.cpp
     Level.cpp
@@ -95,6 +102,7 @@ set(${PROJECT_NAME}_SOURCES
     Systems/Physics.cpp
     Systems/PointCounter.cpp
     Systems/PointVisualisation.cpp
+    Systems/PointsTrigger.cpp
     Systems/Trigger.cpp
     Systems/Tween.cpp
 )

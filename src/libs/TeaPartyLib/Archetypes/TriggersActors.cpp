@@ -9,7 +9,6 @@ const ArchetypeTypeSet NodeActor::gComponentTypes = {
     &typeid(TeaParty::Component::Position)
 };
 
-
 const ArchetypeTypeSet NodeTrigger::gComponentTypes = {
     &typeid(TeaParty::Component::CallbackOnActor),
     &typeid(TeaParty::Component::TriggeringAction),

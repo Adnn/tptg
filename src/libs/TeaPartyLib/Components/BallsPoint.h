@@ -13,6 +13,7 @@
 #include <aunteater/Component.h>
 
 namespace TeaParty { namespace Component {
+
 class BallsPoint : public aunteater::Component
 {
 public:
@@ -26,5 +27,7 @@ public:
 private:
     COMP_CLONE(BallsPoint)
 };
-}}
+
+}} // namespace TeaParty::Component
+
 #endif 
