@@ -14,6 +14,7 @@
 
 #include <Polycode.h>
 
+#include <aunteater/Engine.h>
 #include <aunteater/Component.h>
 
 #include <memory>

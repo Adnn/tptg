@@ -42,6 +42,7 @@ set(${PROJECT_NAME}_HEADERS
     Components/Static.h
     Components/TriggeringAction.h
     Components/Tween.h
+    Components/IWantToDie.h
     Game.h
     InventoryStruct.h
     Level.h
@@ -66,6 +67,7 @@ set(${PROJECT_NAME}_HEADERS
     Systems/Trigger.h
     Systems/Tween.h
     Systems/Utilities.h
+    Systems/Destruction.h
     Vec2.h
     globals.h
 )
@@ -105,6 +107,7 @@ set(${PROJECT_NAME}_SOURCES
     Systems/PointsTrigger.cpp
     Systems/Trigger.cpp
     Systems/Tween.cpp
+    Systems/Destruction.cpp
 )
 
 source_group("Header Files\\Archetypes" REGULAR_EXPRESSION Archetypes/.*\\.h)

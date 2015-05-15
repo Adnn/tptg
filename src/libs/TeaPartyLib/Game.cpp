@@ -15,6 +15,7 @@
 #include "Components/Keyboard.h"
 #include "Components/GamePhase.h"
 #include "Components/Image.h"
+#include "Components/IWantToDie.h"
 #include "Components/Pendular.h"
 #include "Components/PlayerReference.h"
 #include "Components/PointsTarget.h"
@@ -30,6 +31,7 @@
 
 #include "Systems/CameraController.h"
 #include "Systems/CollisionSolver.h"
+#include "Systems/Destruction.h"
 #include "Systems/Display.h"
 #include "Systems/Input.h"
 #include "Systems/AnimationDispatcher.h"
@@ -105,7 +107,8 @@ Game::Game() :
     STFU(PhaseController); // must come after display...
 	STFU(PointVisualisation);
 	STFU(PointCounter);
-	STFU(PointsTrigger)
+    STFU(PointsTrigger);
+    STFU(Destruction);
     
     STFU(KeyboardController);
     STFU(ControllerController);
@@ -237,6 +240,7 @@ Game::Game() :
                                                         aPlayer.get<Component::SelectedPhase>()->phase = Component::Phase::DIPPING;
                                                         aPlayer.get<Component::SelectedPhase>()->victim = &victim;
                                                     });
+    mEngine->addEntity("target", victim);
 
 
 
