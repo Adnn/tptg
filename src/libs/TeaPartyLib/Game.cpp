@@ -26,6 +26,7 @@
 #include "Components/HudItem.h"
 #include "Components/Inventory.h"
 #include "Components/Physics.h"
+#include "Components/Score.h"
 #include "Components/Static.h"
 
 #include "Systems/CameraController.h"
@@ -47,6 +48,7 @@
 #include "Systems/Inventory.h"
 #include "Systems/InventoryLayout.h"
 #include "Systems/HudDisplay.h"
+#include "Systems/ScoreDisplay.h"
 #include "Systems/Tween.h"
 
 #include <ResourcesPath.h>
@@ -103,9 +105,10 @@ Game::Game() :
     STFU(Trigger);
     STFU(Display);
     STFU(PhaseController); // must come after display...
-	STFU(PointVisualisation);
-	STFU(PointCounter);
-	STFU(PointsTrigger)
+    STFU(PointVisualisation);
+    STFU(PointCounter);
+    STFU(PointsTrigger)
+    STFU(ScoreDisplay)
     
     STFU(KeyboardController);
     STFU(ControllerController);
@@ -120,6 +123,7 @@ Game::Game() :
 
     //*** Player Entity setup ***//
     player1.addComponent<Component::Index>(1);
+    player1.addComponent<Component::Score>(1);
     player1.addComponent<Component::ActionController>();
     player1.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.sprites"));
     player1.addComponent<Component::Position>(150, -50);

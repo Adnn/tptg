@@ -36,6 +36,7 @@ set(${PROJECT_NAME}_HEADERS
     Components/PlayerReference.h
     Components/PointsTarget.h
     Components/Position.h
+    Components/Score.h
     Components/SelectedPhase.h
     Components/Speed.h
     Components/Sprite.h
@@ -63,6 +64,7 @@ set(${PROJECT_NAME}_HEADERS
     Systems/PointCounter.h
     Systems/PointVisualisation.h
     Systems/PointsTrigger.h
+    Systems/ScoreDisplay.h
     Systems/Trigger.h
     Systems/Tween.h
     Systems/Utilities.h
@@ -82,6 +84,7 @@ set(${PROJECT_NAME}_SOURCES
     Components/Pendular.cpp
     Components/PlayerReference.cpp
     Components/PointsTarget.cpp
+    Components/Score.cpp
     Components/SelectedPhase.cpp
     Game.cpp
     Level.cpp
@@ -103,6 +106,7 @@ set(${PROJECT_NAME}_SOURCES
     Systems/PointCounter.cpp
     Systems/PointVisualisation.cpp
     Systems/PointsTrigger.cpp
+    Systems/ScoreDisplay.cpp
     Systems/Trigger.cpp
     Systems/Tween.cpp
 )
