@@ -31,14 +31,19 @@ void PointsTrigger::addedToEngine(aunteater::Engine &aEngine)
 
 void PointsTrigger::update(double time)
 {
-    static int i = 0;
+    //static int i = 0;
+    std::vector<CallbackNoParam::Function> triggered;
     for (aunteater::Node &trigger : *mPointsTriggers)
     {
-        std::cout << "F:" << i << "    " << trigger.get<BallsPoint>().point << "   " << trigger.get<PointsTarget>().target << std::endl;
+        //std::cout << "F:" << i << "    " << trigger.get<BallsPoint>().point << "   " << trigger.get<PointsTarget>().target << std::endl;
         if(trigger.get<BallsPoint>().point >= trigger.get<PointsTarget>().target)
         {
-            trigger.get<CallbackNoParam>().callback();
+            triggered.push_back(trigger.get<CallbackNoParam>().callback);
         }
     }
-    i++;
+
+    // Deffered in order not to invalidate the loop iterators
+    std::for_each(triggered.begin(), triggered.end(), [](CallbackNoParam::Function &aFunc){aFunc();});
+
+    //i++;
 }

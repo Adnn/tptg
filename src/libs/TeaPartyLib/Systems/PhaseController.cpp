@@ -2,12 +2,16 @@
 
 #include "../Archetypes/NodeCamera.h"
 
+#include "../Components/ActionController.h"
+#include "../Components/BallsPoint.h"
+#include "../Components/CallbackOnActor.h"
 #include "../Components/CallbackNoParam.h"
 #include "../Components/GamePhase.h"
 #include "../Components/Index.h"
 #include "../Components/PlayerReference.h"
 #include "../Components/PointsTarget.h"
 #include "../Components/Position.h"
+#include "../Components/Speed.h"
 
 #include "../globals.h"
 
@@ -40,22 +44,43 @@ void PhaseController::update(double aTime)
     {
         auto assignedPlayer = camera.get<Component::PlayerReference>().entity;
         auto phase = assignedPlayer->get<Component::SelectedPhase>()->phase;
+        auto & prevPhase = assignedPlayer->get<Component::SelectedPhase>()->previousPhase;
+
+        if(phase == prevPhase)
+        {
+            if(phase == Component::Phase::DIPPING)
+            {
+                replaceCameraRoot(camera, assignedPlayer->get<Component::GamePhase>()->phaseRootEntity.get());
+            }
+
+            return;
+        }
+
         if(phase == Component::Phase::DIPPING)
         {
-            replaceCameraRoot(camera, assignedPlayer->get<Component::GamePhase>()->phaseRootEntity.get());
             std::ostringstream oss;
+            oss << "pointCounter" << assignedPlayer->get<Index>()->index;
+            aunteater::Entity &pointCounter = *(mEngine->getEntity(oss.str()));
 
-            //oss << "pointCounter" << assignedPlayer->get<Index>()->index;
-            //std::cout << oss.str() << std::endl;
-            //aunteater::Entity &pointCounter = *(mEngine->getEntity(oss.str()));
-            aunteater::weak_entity pointCounter = assignedPlayer->get<Index>()->ballsCounter;
+            pointCounter.addComponent<BallsPoint>();
+            pointCounter.addComponent<PointsTarget>(MAX_POINT);
 
-            pointCounter->addComponent<PointsTarget>(MAX_POINT);
-            
-            pointCounter->addComponent<CallbackNoParam>([assignedPlayer]()
+            assignedPlayer->removeComponent<ActionController>();
+            assignedPlayer->get<Speed>()->vX = 0.;
+
+            aunteater::weak_entity victim = assignedPlayer->get<SelectedPhase>()->victim;
+            pointCounter.addComponent<CallbackNoParam>([assignedPlayer, victim, &pointCounter]()
             {
                 assignedPlayer->get<SelectedPhase>()->phase = Phase::DEFAULT;
+                //pointCounter.get<BallsPoint>()->point = 0;
+                pointCounter.removeComponent<BallsPoint>();
+                pointCounter.removeComponent<PointsTarget>();
+                pointCounter.removeComponent<CallbackNoParam>();
+                assignedPlayer->addComponent<ActionController>();
+                victim->removeComponent<CallbackOnActor>();
             });
         }
+
+        prevPhase = phase;
     }
 }

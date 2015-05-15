@@ -17,13 +17,11 @@ namespace TeaParty { namespace Component {
 class Index : public aunteater::Component
 {
 public:
-	Index(int aId, aunteater::weak_entity counter):
-		index(aId),
-        ballsCounter(counter)
+	Index(int aId):
+		index(aId)
 	{}
 
 	const int index;
-    aunteater::weak_entity ballsCounter;
 
 private:
     COMP_CLONE(Index)

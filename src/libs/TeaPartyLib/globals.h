@@ -20,3 +20,5 @@
 #define LAYERS 4
 
 #define MAX_POINT 1000.0
+#define PERFECT_TIME 1.
+#define DEAD_ZONE 10.

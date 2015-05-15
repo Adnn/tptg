@@ -22,8 +22,6 @@ const aunteater::ArchetypeTypeSet NodePointCounter::gComponentTypes = {
     &typeid(Component::Position)
 };
 
-#define PERFECT_TIME 3.
-#define DEAD_ZONE 10.
 
 void PointCounter::addedToEngine(aunteater::Engine &aEngine)
 {
@@ -51,6 +49,10 @@ void PointCounter::update(double time)
         aunteater::weak_entity & ballsDisplay = node.get<Component::Pendular>().pointCounter;
 
 
-        ballsDisplay->get<Component::BallsPoint>()->point += std::abs(MAX_POINT / PERFECT_TIME / 60. / resultingX(x)) ;
+        // Hack to only do it when the balls display actually has BallsPoint (which are only put at the beginning of the dipping phase)
+        if(ballsDisplay->has<Component::BallsPoint>())
+        {
+            ballsDisplay->get<Component::BallsPoint>()->point += std::abs(MAX_POINT / PERFECT_TIME / 60. / resultingX(x)) ;
+        }
 	}
 }

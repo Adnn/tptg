@@ -119,6 +119,7 @@ Game::Game() :
     aunteater::Entity player1;
 
     //*** Player Entity setup ***//
+    player1.addComponent<Component::Index>(1);
     player1.addComponent<Component::ActionController>();
     player1.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.sprites"));
     player1.addComponent<Component::Position>(150, -50);
@@ -192,19 +193,17 @@ Game::Game() :
     //pivot.get<Component::Sprite>()->polySprite->setScale(10, 10);
     player1.get<Component::GamePhase>()->phaseRootEntity->addChild(pivot.get<Component::Sprite>()->polySprite.get());
 
+    //*** Balls Point ***//
     aunteater::Entity point;
     point.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_deep_counter.sprites"));
     point.addComponent<Component::Position>(X_ROOM - 50, Y_ROOM/2 - 50, LAYERS-1); // last layer, never displayed by the main phase
     point.addComponent<Component::AnimationStillFrame>();
-	point.addComponent<Component::BallsPoint>();
-    //point.addComponent<Component::PointsTarget>(MAX_POINT);
+	//point.addComponent<Component::BallsPoint>(); // Now added when the game phase changes to DIPPING
     point.get<Component::Sprite>()->polySprite->setSpriteByName("balls_deep_counter");
     point.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
     mEngine->addEntity("pointCounter1", point);
 	point.get<Component::Sprite>()->polySprite->setScale(3, 3);
     player1.get<Component::GamePhase>()->phaseRootEntity->addChild(point.get<Component::Sprite>()->polySprite.get());
-
-    mEngine->getEntity("player1")->addComponent<Component::Index>(1, mEngine->getEntity("pointCounter1"));
 
     //*** Crosshair ***//
     aunteater::Entity hairyCross;
@@ -213,12 +212,7 @@ Game::Game() :
 
     hairyCross.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_crosshair.sprites"));
     hairyCross.addComponent<Component::Position>(0, -20, LAYERS-1); // last layer, never displayed by the main phase
-//    hairyCross.addComponent<Component::Displacement>();
-//    hairyCross.addComponent<Component::Extent>(0, 0);
-//    hairyCross.addComponent<Component::Speed>();
     hairyCross.addComponent<Component::Physics>(100.2);
-    //hairyCross.addComponent<Component::AnimationList>("default");
-    //hairyCross.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
 
     mEngine->addEntity("cross1", hairyCross);
     hairyCross.get<Component::Sprite>()->polySprite->setSpriteByName("balls_crosshair");
@@ -229,18 +223,20 @@ Game::Game() :
 
 
     //*** Victim ***//
-    aunteater::Entity victim;
+    aunteater::Entity &victim = *mEngine->addEntity(aunteater::Entity());
     // Graphics
-    victim.addComponent<Component::Image>("target.png");
-    victim.addComponent<Component::Position>(100, 0, 0); // last layer, never displayed by the main phase
+    victim.addComponent<Component::Sprite>(new Polycode::SpriteSet("sleeping_guy.sprites"));
+    victim.get<Component::Sprite>()->polySprite->setSpriteByName("sleeping_guy");
+    victim.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
+    victim.addComponent<Component::Position>(100, -115, 0); // last layer, never displayed by the main phase
     // Trigger
     victim.addComponent<Component::Extent>(VICTIM_EXTENT, VICTIM_EXTENT);
     victim.addComponent<Component::TriggeringAction>(Component::Action::A);
-    victim.addComponent<Component::CallbackOnActor>([](aunteater::Entity &aPlayer)
+    victim.addComponent<Component::CallbackOnActor>([&victim](aunteater::Entity &aPlayer)
                                                     {
                                                         aPlayer.get<Component::SelectedPhase>()->phase = Component::Phase::DIPPING;
+                                                        aPlayer.get<Component::SelectedPhase>()->victim = &victim;
                                                     });
-    mEngine->addEntity("target", victim);
 
 
 

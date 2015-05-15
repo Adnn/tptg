@@ -31,6 +31,10 @@ enum class Phase
 struct SelectedPhase : public aunteater::Component
 {
     Phase phase = Phase::DEFAULT;
+    Phase previousPhase = Phase::DEFAULT;
+
+    // Dipping Phase
+    aunteater::weak_entity victim = nullptr;
 
 private:
     COMP_CLONE(SelectedPhase)
