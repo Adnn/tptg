@@ -15,6 +15,7 @@
 
 #define WALL_EXTENT 65.
 #define PORTAL_EXTENT 40.
+#define VICTIM_EXTENT 30.
 
 #define LAYERS 4
 

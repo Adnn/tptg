@@ -124,6 +124,7 @@ Game::Game() :
     player1.addComponent<Component::Physics>();
     player1.addComponent<Component::Inventory>();
 
+    player1.addComponent<Component::SelectedPhase>();
     aunteater::Entity itemYo;
     itemYo.addComponent<Component::HudItem>(new Polycode::SpriteSet("items.sprites"));
     itemYo.get<Component::HudItem>()->polySprite.get()->setSpriteByName("item1");
@@ -218,6 +219,20 @@ Game::Game() :
     //pivot.get<Component::Sprite>()->polySprite->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
 
 
+    //*** Victim ***//
+    aunteater::Entity victim;
+    // Graphics
+    victim.addComponent<Component::Image>("target.png");
+    victim.addComponent<Component::Position>(100, 0, 0); // last layer, never displayed by the main phase
+    // Trigger
+    victim.addComponent<Component::Extent>(VICTIM_EXTENT, VICTIM_EXTENT);
+    victim.addComponent<Component::TriggeringAction>(Component::Action::A);
+    victim.addComponent<Component::CallbackOnActor>([](aunteater::Entity &aPlayer)
+                                                    {
+                                                        aPlayer.get<Component::SelectedPhase>()->phase = Component::Phase::DIPPING;
+                                                    });
+    mEngine->addEntity("target", victim);
+
 
 
     // CAN BE SHARED BY ALL ONE SCREEN GAMES
@@ -244,6 +259,7 @@ Game::Game() :
 	player2.addComponent<Component::Displacement>();
 	player2.addComponent<Component::Extent>();
 	player2.addComponent<Component::Speed>();
+    player2.addComponent<Component::SelectedPhase>();
 
     if (Polycode::CoreServices::getInstance()->getCore()->getInput()->getNumJoysticks() > 0)
     {
@@ -269,10 +285,8 @@ Game::Game() :
         {
             aunteater::Entity camera;
             camera.addComponent<Component::Position>(0., 0.);
-            camera.addComponent<Component::SelectedPhase>();
 			if (rowId % 2 == 0)
 			{
-                camera.get<Component::SelectedPhase>()->phase = Component::Phase::DIPPING;
 				camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player1"));
 				camera.addComponent<Component::ClippedScene>(rowId, colId);
 			}

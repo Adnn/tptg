@@ -33,10 +33,11 @@ void PhaseController::update(double aTime)
 {
     for (aunteater::Node &camera : *mCameras)
     {
-        auto phase = camera.get<Component::SelectedPhase>().phase;
+        auto assignedPlayer = camera.get<Component::PlayerReference>().entity;
+        auto phase = assignedPlayer->get<Component::SelectedPhase>()->phase;
         if(phase == Component::Phase::DIPPING)
         {
-            replaceCameraRoot(camera, camera.get<Component::PlayerReference>().entity->get<Component::GamePhase>()->phaseRootEntity.get());
+            replaceCameraRoot(camera, assignedPlayer->get<Component::GamePhase>()->phaseRootEntity.get());
         }
     }
 }
