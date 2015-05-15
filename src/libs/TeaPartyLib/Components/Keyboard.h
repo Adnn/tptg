@@ -17,8 +17,17 @@ namespace TeaParty { namespace Component {
 class Keyboard : public aunteater::Component
 {
 public:
-	Keyboard()
+	Keyboard(Polycode::PolyKEY aL = Polycode::KEY_LEFT, Polycode::PolyKEY aR = Polycode::KEY_RIGHT,
+             Polycode::PolyKEY aA = Polycode::KEY_a) :
+            left(aL),
+            right(aR),
+            action(aA)
 	{}
+
+    Polycode::PolyKEY left;
+    Polycode::PolyKEY right;
+    Polycode::PolyKEY action;
+
 private:
     COMP_CLONE(Keyboard)
 };

@@ -52,12 +52,14 @@ void KeyboardController::update(double time)
         Component::ActionController & actionController =
             keyboardActionCtrl.get<Component::ActionController>();
 
+        const Component::Keyboard &kb = keyboardActionCtrl.get<Component::Keyboard>();
+
         buttonUpdate(keyboard, actionController.up, Polycode::KEY_UP);
         buttonUpdate(keyboard, actionController.down, Polycode::KEY_DOWN);
-        buttonUpdate(keyboard, actionController.left, Polycode::KEY_LEFT);
-        buttonUpdate(keyboard, actionController.right, Polycode::KEY_RIGHT);
+        buttonUpdate(keyboard, actionController.left, kb.left);
+        buttonUpdate(keyboard, actionController.right, kb.right);
         buttonUpdate(keyboard, actionController.buttonAction, Polycode::KEY_SPACE);
-        buttonUpdate(keyboard, actionController.buttonA, Polycode::KEY_a);
+        buttonUpdate(keyboard, actionController.buttonA, kb.action);
         buttonUpdate(keyboard, actionController.buttonZ, Polycode::KEY_z);
         buttonUpdate(keyboard, actionController.buttonT, Polycode::KEY_t);
     }

@@ -103,7 +103,14 @@ void createPlayer(aunteater::Engine &mEngine, std::vector<std::unique_ptr<Struct
     }
     else
     {
-        player1.addComponent<Component::Keyboard>();
+        if(index == 1)
+        {
+            player1.addComponent<Component::Keyboard>();
+        }
+        else
+        {
+            player1.addComponent<Component::Keyboard>(Polycode::KEY_KP4, Polycode::KEY_KP6, Polycode::KEY_KP5);
+        }
     }
     player1.addComponent<Component::AnimationList>("idle");
     player1.addComponent<Component::Physics>();
@@ -158,7 +165,14 @@ void createPlayer(aunteater::Engine &mEngine, std::vector<std::unique_ptr<Struct
     }
     else
     {
-        pivot.addComponent<Component::Keyboard>();
+        if(index == 1)
+        {
+            pivot.addComponent<Component::Keyboard>();
+        }
+        else
+        {
+            pivot.addComponent<Component::Keyboard>(Polycode::KEY_KP4, Polycode::KEY_KP6, Polycode::KEY_KP5);
+        }
     }
     pivot.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
 
@@ -195,7 +209,25 @@ void createPlayer(aunteater::Engine &mEngine, std::vector<std::unique_ptr<Struct
 
     player1.get<Component::GamePhase>()->phaseRootEntity->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
 
-};
+}
+
+void createVictim(aunteater::Engine &aEngine, double x, int z)
+{
+    aunteater::Entity &victim = *aEngine.addEntity("target",aunteater::Entity());
+    // Graphics
+    victim.addComponent<Component::Sprite>(new Polycode::SpriteSet("sleeping_guy.sprites"));
+    victim.get<Component::Sprite>()->polySprite->setSpriteByName("sleeping_guy");
+    victim.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
+    victim.addComponent<Component::Position>(x, -115, z); // last layer, never displayed by the main phase
+    // Trigger
+    victim.addComponent<Component::Extent>(VICTIM_EXTENT, VICTIM_EXTENT);
+    victim.addComponent<Component::TriggeringAction>(Component::Action::A);
+    victim.addComponent<Component::CallbackOnActor>([&victim](aunteater::Entity &aPlayer)
+                                                    {
+                                                        aPlayer.get<Component::SelectedPhase>()->phase = Component::Phase::DIPPING;
+                                                        aPlayer.get<Component::SelectedPhase>()->victim = &victim;
+                                                    });
+}
 
 Game::Game() :
     mEngine(new aunteater::Engine)
@@ -242,21 +274,7 @@ Game::Game() :
     createPlayer(*mEngine.get(), mAnimations, "runningChamp2.sprites", 2);
 
     //*** Victim ***//
-    aunteater::Entity &victim = *mEngine->addEntity("target",aunteater::Entity());
-    // Graphics
-    victim.addComponent<Component::Sprite>(new Polycode::SpriteSet("sleeping_guy.sprites"));
-    victim.get<Component::Sprite>()->polySprite->setSpriteByName("sleeping_guy");
-    victim.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
-    victim.addComponent<Component::Position>(100, -115, 0); // last layer, never displayed by the main phase
-    // Trigger
-    victim.addComponent<Component::Extent>(VICTIM_EXTENT, VICTIM_EXTENT);
-    victim.addComponent<Component::TriggeringAction>(Component::Action::A);
-    victim.addComponent<Component::CallbackOnActor>([&victim](aunteater::Entity &aPlayer)
-                                                    {
-                                                        aPlayer.get<Component::SelectedPhase>()->phase = Component::Phase::DIPPING;
-                                                        aPlayer.get<Component::SelectedPhase>()->victim = &victim;
-                                                    });
-
+    createVictim(*mEngine, 100, 0);
 
 
     // CAN BE SHARED BY ALL ONE SCREEN GAMES
