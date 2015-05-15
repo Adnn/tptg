@@ -68,8 +68,11 @@ using namespace TeaParty;
     mSystems.push_back(std::make_unique<System:: systemType>(arg_1)); \
     mEngine->addSystem(mSystems.back().get());
 
+//        VICTIM 50
 const std::string gLevelDefinition = R"#(
 		room_double_mandala_alt.png
+        VICTIM -300
+        VICTIM -100
         room_green_small.png
         room_brown.png
         room_double_mandala.png
@@ -83,6 +86,8 @@ const std::string gLevelDefinition = R"#(
 		room_double_mandala_alt.png
     )#";
 
+namespace TeaParty
+{
 
 void createPlayer(aunteater::Engine &mEngine, std::vector<std::unique_ptr<Structure::Animation>> &mAnimations, std::string spriteSet, int index)
 {
@@ -213,7 +218,7 @@ void createPlayer(aunteater::Engine &mEngine, std::vector<std::unique_ptr<Struct
 
 void createVictim(aunteater::Engine &aEngine, double x, int z)
 {
-    aunteater::Entity &victim = *aEngine.addEntity("target",aunteater::Entity());
+    aunteater::Entity &victim = *aEngine.addEntity(aunteater::Entity());
     // Graphics
     victim.addComponent<Component::Sprite>(new Polycode::SpriteSet("sleeping_guy.sprites"));
     victim.get<Component::Sprite>()->polySprite->setSpriteByName("sleeping_guy");
@@ -229,14 +234,13 @@ void createVictim(aunteater::Engine &aEngine, double x, int z)
                                                     });
 }
 
+} //namespace TeaParty
+
 Game::Game() :
     mEngine(new aunteater::Engine)
 {
     Polycode::CoreServices::getInstance()->getResourceManager()->addArchive(gResourcesRoot+"/Archive.zip");
     Polycode::CoreServices::getInstance()->getFontManager()->registerFont("sans", "sans.ttf");
-
-    std::istringstream defStream(gLevelDefinition);
-    mLevel = std::make_unique<Level>(defStream, *mEngine);
     //initLevel();
 
     STFU(Input);
@@ -247,11 +251,17 @@ Game::Game() :
     STFU(HudDisplay);
     STFU(CollisionSolver);
     STFU(Tween);
+
+    STFU(Display); // must be done before putting victims so we see them...
+    std::istringstream defStream(gLevelDefinition);
+    mLevel = std::make_unique<Level>(defStream, *mEngine);
+    
     // From here, everything have its position assigned for the next frame to display
     STFU1(CameraController, mLevel.get());
     STFU(AnimationDispatcher);
     STFU(Trigger);
-    STFU(Display);
+
+
     STFU(PhaseController); // must come after display...
     STFU(PointVisualisation);
     STFU(PointCounter);
@@ -275,6 +285,7 @@ Game::Game() :
 
     //*** Victim ***//
     createVictim(*mEngine, 100, 0);
+   // createVictim(*mEngine, 1010, 0);
 
 
     // CAN BE SHARED BY ALL ONE SCREEN GAMES

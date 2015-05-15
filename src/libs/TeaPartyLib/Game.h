@@ -39,6 +39,8 @@ private:
     std::vector<std::unique_ptr<Structure::Animation> > mAnimations;
 };
 
+void createVictim(aunteater::Engine &aEngine, double x, int z);
+
 } // namespace TeaParty
 
 #endif

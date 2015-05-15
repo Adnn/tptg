@@ -1,5 +1,7 @@
 #include "Level.h"
 
+#include "Game.h"
+
 #include "Components/CallbackOnActor.h"
 #include "Components/Extent.h"
 #include "Components/Image.h"
@@ -62,6 +64,14 @@ Level::Level(std::istream &aDefinitionStream, aunteater::Engine &aEngine)
         {
             makeWall(mRightOffset, aEngine);
             nextLayer();
+            continue;
+        }
+
+        if(roomImageFile == "VICTIM")
+        {
+            double leftOffset;
+            aDefinitionStream >> leftOffset;
+            createVictim(aEngine, mRightOffset+leftOffset, mCurrentZIndex);
             continue;
         }
 

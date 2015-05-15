@@ -55,6 +55,8 @@ void PhaseController::update(double aTime)
         {
             if(phase == Component::Phase::DIPPING)
             {
+                auto entity = assignedPlayer->get<Component::GamePhase>()->phaseRootEntity.get();
+                entity->setPositionX(camera.get<Position>().coords.x - X_ROOM/2.);
                 replaceCameraRoot(camera, assignedPlayer->get<Component::GamePhase>()->phaseRootEntity.get());
             }
 
