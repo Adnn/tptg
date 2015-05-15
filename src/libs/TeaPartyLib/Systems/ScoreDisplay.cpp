@@ -7,6 +7,8 @@
 
 #include "../globals.h"
 
+#include <sstream>
+
 using namespace TeaParty;
 using namespace System;
 using namespace Component;

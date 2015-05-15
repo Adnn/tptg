@@ -33,7 +33,7 @@ void axisUpdate(Polycode::JoystickInfo *controller,
 	TeaParty::Component::input_state &aNegButton,
 	int index)
 {
-	if(controller->joystickAxisState[index] > 0.2)
+	if(controller->joystickAxisState[index] > 0.4)
 	{
 		aPosButton = isDown(aPosButton) ?
                   TeaParty::Component::input_state::BUTTON_DOWN : TeaParty::Component::input_state::BUTTON_FALLING_EDGE;
@@ -43,7 +43,7 @@ void axisUpdate(Polycode::JoystickInfo *controller,
 		aPosButton = isUp(aPosButton) ?
 			TeaParty::Component::input_state::BUTTON_UP : TeaParty::Component::input_state::BUTTON_RISING_EDGE;
 	}
-	if(controller->joystickAxisState[index] < -0.2)
+	if(controller->joystickAxisState[index] < -0.4)
 	{
 		aNegButton = isDown(aNegButton) ?
                   TeaParty::Component::input_state::BUTTON_DOWN : TeaParty::Component::input_state::BUTTON_FALLING_EDGE;

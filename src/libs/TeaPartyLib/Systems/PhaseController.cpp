@@ -15,6 +15,8 @@
 #include "../Components/Score.h"
 #include "../Components/Speed.h"
 #include "../Components/Sprite.h"
+#include "../Components/Image.h"
+#include "../Components/Tween.h"
 
 #include "../globals.h"
 
@@ -56,7 +58,7 @@ void PhaseController::update(double aTime)
                 replaceCameraRoot(camera, assignedPlayer->get<Component::GamePhase>()->phaseRootEntity.get());
             }
 
-            return;
+            continue;
         }
 
         if(phase == Component::Phase::DIPPING)
@@ -85,6 +87,21 @@ void PhaseController::update(double aTime)
                 victim->addComponent<IWantToDie>(3.);
                 victim->get<Component::Sprite>()->polySprite->setSpriteStateByName("dying",0,false);
             });
+
+            aunteater::Entity title;
+            title.addComponent<Image>("dip_screen.png");
+            title.addComponent<Position>(0., 0.);
+            title.addComponent<IWantToDie>(3.);
+            mEngine->addEntity(title);
+
+            aunteater::Entity ballPaint;
+            ballPaint.addComponent<Sprite>(new Polycode::SpriteSet("ball_paint.sprites"));
+            ballPaint.get<Sprite>()->polySprite->setSpriteByName("ball_paint");
+            ballPaint.get<Sprite>()->polySprite->setSpriteStateByName("default",0,false);
+            ballPaint.addComponent<Position>(0., Y_ROOM / 2. + 30);
+            ballPaint.addComponent<Component::Tween>(Vec2(0., -Y_ROOM / 2. + 30), Vec2(0., Y_ROOM / 2. - 30), 3.);
+            ballPaint.addComponent<IWantToDie>(3.);
+            mEngine->addEntity(ballPaint);
         }
 
         prevPhase = phase;

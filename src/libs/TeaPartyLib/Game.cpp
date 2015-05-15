@@ -84,6 +84,119 @@ const std::string gLevelDefinition = R"#(
     )#";
 
 
+void createPlayer(aunteater::Engine &mEngine, std::vector<std::unique_ptr<Structure::Animation>> &mAnimations, std::string spriteSet, int index)
+{
+    aunteater::Entity player1;
+
+    //*** Player Entity setup ***//
+    player1.addComponent<Component::Index>(index);
+    player1.addComponent<Component::Score>();
+    player1.addComponent<Component::ActionController>();
+    player1.addComponent<Component::Sprite>(new Polycode::SpriteSet(spriteSet));
+    player1.addComponent<Component::Position>(150, -50);
+    player1.addComponent<Component::Displacement>();
+    player1.addComponent<Component::Extent>();
+    player1.addComponent<Component::Speed>();
+    if (Polycode::CoreServices::getInstance()->getCore()->getInput()->getNumJoysticks() > index - 1)
+    {
+        player1.addComponent<Component::Controller>(Polycode::CoreServices::getInstance()->getCore()->getInput()->getJoystickInfoByIndex(index - 1));
+    }
+    else
+    {
+        player1.addComponent<Component::Keyboard>();
+    }
+    player1.addComponent<Component::AnimationList>("idle");
+    player1.addComponent<Component::Physics>();
+
+    player1.addComponent<Component::SelectedPhase>();
+    //aunteater::Entity itemYo;
+    //itemYo.addComponent<Component::HudItem>(new Polycode::SpriteSet("items.sprites"));
+    //itemYo.get<Component::HudItem>()->polySprite.get()->setSpriteByName("item1");
+    //itemYo.get<Component::HudItem>()->polySprite.get()->setSpriteStateByName("default",0,false);
+    //itemYo.addComponent<Component::Position>(0,0);
+    //mEngine->addEntity("penis-like-sword",itemYo);
+
+    //player1.get<Component::Inventory>()->addItemToInventory("penis-like-sword",mEngine->getEntity("penis-like-sword"));
+
+
+    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
+    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
+    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
+    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[3].get());
+
+    player1.addComponent<Component::GamePhase>();
+    mEngine.addEntity("player" + std::to_string(index), player1);
+
+    //*** End Player ***//
+
+    //*** Bagging mini game ***//
+    aunteater::Entity sleepyFace;
+    sleepyFace.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_deep.sprites"));
+    sleepyFace.addComponent<Component::Position>(X_ROOM / 2., 0, LAYERS - 1); // last layer, never displayed by the main phase
+    sleepyFace.addComponent<Component::AnimationList>("default");
+    sleepyFace.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
+    mEngine.addEntity("face" + std::to_string(index), sleepyFace);
+
+    sleepyFace.get<Component::Sprite>()->polySprite->setSpriteByName("balls_deep");
+    sleepyFace.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
+    sleepyFace.get<Component::Sprite>()->polySprite->setScale(11, 11);
+    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(sleepyFace.get<Component::Sprite>()->polySprite.get());
+
+    //*** Pivot ***//
+    aunteater::Entity pivot;
+    pivot.addComponent<Component::Sprite>(new Polycode::SpriteSet("cross.sprites"));
+    pivot.addComponent<Component::Position>(150, -20, LAYERS - 1); // last layer, never displayed by the main phase
+    pivot.addComponent<Component::ActionController>();
+    pivot.addComponent<Component::Displacement>();
+    pivot.addComponent<Component::Extent>(50, 50);
+    pivot.addComponent<Component::Physics>();
+    pivot.addComponent<Component::Speed>();
+    pivot.addComponent<Component::AnimationList>("default");
+    if (Polycode::CoreServices::getInstance()->getCore()->getInput()->getNumJoysticks() > index - 1)
+    {
+        pivot.addComponent<Component::Controller>(Polycode::CoreServices::getInstance()->getCore()->getInput()->getJoystickInfoByIndex(index - 1));
+    }
+    else
+    {
+        pivot.addComponent<Component::Keyboard>();
+    }
+    pivot.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
+
+    mEngine.addEntity("pivot" + std::to_string(index), pivot);
+    pivot.get<Component::Sprite>()->polySprite->setSpriteByName("cross");
+    pivot.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
+    //pivot.get<Component::Sprite>()->polySprite->setScale(10, 10);
+    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(pivot.get<Component::Sprite>()->polySprite.get());
+
+    //*** Balls Point ***//
+    aunteater::Entity point;
+    point.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_deep_counter.sprites"));
+    point.addComponent<Component::Position>(X_ROOM - 50, Y_ROOM / 2 - 50, LAYERS - 1); // last layer, never displayed by the main phase
+    point.addComponent<Component::AnimationStillFrame>();
+    //point.addComponent<Component::BallsPoint>(); // Now added when the game phase changes to DIPPING
+    point.get<Component::Sprite>()->polySprite->setSpriteByName("balls_deep_counter");
+    point.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
+    mEngine.addEntity("pointCounter" + std::to_string(index), point);
+    point.get<Component::Sprite>()->polySprite->setScale(3, 3);
+    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(point.get<Component::Sprite>()->polySprite.get());
+
+    //*** Crosshair ***//
+    aunteater::Entity hairyCross;
+    hairyCross.addComponent<Component::Pendular>(.5, 0.5, mEngine.getEntity("pointCounter" + std::to_string(index)));
+    hairyCross.addComponent<Component::PivotReference>(mEngine.getEntity("pivot" + std::to_string(index)));
+
+    hairyCross.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_crosshair.sprites"));
+    hairyCross.addComponent<Component::Position>(0, -20, LAYERS - 1); // last layer, never displayed by the main phase
+    hairyCross.addComponent<Component::Physics>(100.2);
+
+    mEngine.addEntity("cross" + std::to_string(index), hairyCross);
+    hairyCross.get<Component::Sprite>()->polySprite->setSpriteByName("balls_crosshair");
+    hairyCross.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
+
+    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
+
+};
+
 Game::Game() :
     mEngine(new aunteater::Engine)
 {
@@ -111,6 +224,7 @@ Game::Game() :
     STFU(PointVisualisation);
     STFU(PointCounter);
     STFU(PointsTrigger)
+    STFU(ScoreDisplay)
     STFU(Destruction);
     
     STFU(KeyboardController);
@@ -122,115 +236,13 @@ Game::Game() :
 	mAnimations.push_back(std::make_unique<Structure::Animation>("idle_right", 0, 30.0f));
 	mAnimations.push_back(std::make_unique<Structure::Animation>("default", 0, 4.0f));
 
-    aunteater::Entity player1;
-
-    //*** Player Entity setup ***//
-    player1.addComponent<Component::Index>(1);
-    player1.addComponent<Component::Score>();
-    player1.addComponent<Component::ActionController>();
-    player1.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.sprites"));
-    player1.addComponent<Component::Position>(150, -50);
-    player1.addComponent<Component::Displacement>();
-    player1.addComponent<Component::Extent>();
-    player1.addComponent<Component::Speed>();
-    player1.addComponent<Component::Keyboard>();
-    player1.addComponent<Component::AnimationList>("idle");
-    player1.addComponent<Component::Physics>();
-    player1.addComponent<Component::Inventory>();
-
-    player1.addComponent<Component::SelectedPhase>();
-    aunteater::Entity itemYo;
-    itemYo.addComponent<Component::HudItem>(new Polycode::SpriteSet("items.sprites"));
-    itemYo.get<Component::HudItem>()->polySprite.get()->setSpriteByName("item1");
-    itemYo.get<Component::HudItem>()->polySprite.get()->setSpriteStateByName("default",0,false);
-    itemYo.addComponent<Component::Position>(0,0);
-    mEngine->addEntity("penis-like-sword",itemYo);
-
-    player1.get<Component::Inventory>()->addItemToInventory("penis-like-sword",mEngine->getEntity("penis-like-sword"));
-
-    aunteater::Entity item;
-    item.addComponent<Component::HudItem>(new Polycode::SpriteSet("items.sprites"));
-    item.get<Component::HudItem>()->polySprite.get()->setSpriteByName("item2");
-    item.get<Component::HudItem>()->polySprite.get()->setSpriteStateByName("default",0,false);
-	item.addComponent<Component::Position>(0, 0);
-    mEngine->addEntity("penis",item);
-
-    player1.get<Component::Inventory>()->addItemToInventory("penis",mEngine->getEntity("penis"));
-
-
-    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
-    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
-    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
-    player1.get<Component::AnimationList>()->addAnimation(*mAnimations[3].get());
-
-    player1.addComponent<Component::GamePhase>();
-    mEngine->addEntity("player1", player1);
-
-    //*** End Player ***//
-
-    //*** Bagging mini game ***//
-    aunteater::Entity sleepyFace;
-    sleepyFace.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_deep.sprites"));
-    sleepyFace.addComponent<Component::Position>(X_ROOM/2., 0, LAYERS-1); // last layer, never displayed by the main phase
-    sleepyFace.addComponent<Component::AnimationList>("default");
-    sleepyFace.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
-    mEngine->addEntity("face1", sleepyFace);
-
-    sleepyFace.get<Component::Sprite>()->polySprite->setSpriteByName("balls_deep");
-    sleepyFace.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
-    sleepyFace.get<Component::Sprite>()->polySprite->setScale(11, 11);
-    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(sleepyFace.get<Component::Sprite>()->polySprite.get());
-
-    //*** Pivot ***//
-    aunteater::Entity pivot;
-    pivot.addComponent<Component::Sprite>(new Polycode::SpriteSet("cross.sprites"));
-    pivot.addComponent<Component::Position>(150, -20, LAYERS-1); // last layer, never displayed by the main phase
-    pivot.addComponent<Component::ActionController>();
-    pivot.addComponent<Component::Keyboard>();
-    pivot.addComponent<Component::Displacement>();
-    pivot.addComponent<Component::Extent>(50, 50);
-    pivot.addComponent<Component::Physics>();
-    pivot.addComponent<Component::Speed>();
-    pivot.addComponent<Component::AnimationList>("default");
-    pivot.get<Component::AnimationList>()->addAnimation(*mAnimations[4].get());
-
-    mEngine->addEntity("pivot1", pivot);
-    pivot.get<Component::Sprite>()->polySprite->setSpriteByName("cross");
-    pivot.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
-    //pivot.get<Component::Sprite>()->polySprite->setScale(10, 10);
-    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(pivot.get<Component::Sprite>()->polySprite.get());
-
-    //*** Balls Point ***//
-    aunteater::Entity point;
-    point.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_deep_counter.sprites"));
-    point.addComponent<Component::Position>(X_ROOM - 50, Y_ROOM/2 - 50, LAYERS-1); // last layer, never displayed by the main phase
-    point.addComponent<Component::AnimationStillFrame>();
-	//point.addComponent<Component::BallsPoint>(); // Now added when the game phase changes to DIPPING
-    point.get<Component::Sprite>()->polySprite->setSpriteByName("balls_deep_counter");
-    point.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
-    mEngine->addEntity("pointCounter1", point);
-	point.get<Component::Sprite>()->polySprite->setScale(3, 3);
-    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(point.get<Component::Sprite>()->polySprite.get());
-
-    //*** Crosshair ***//
-    aunteater::Entity hairyCross;
-    hairyCross.addComponent<Component::Pendular>(.5, 0.5, mEngine->getEntity("pointCounter1"));
-    hairyCross.addComponent<Component::PivotReference>(mEngine->getEntity("pivot1"));
-
-    hairyCross.addComponent<Component::Sprite>(new Polycode::SpriteSet("balls_crosshair.sprites"));
-    hairyCross.addComponent<Component::Position>(0, -20, LAYERS-1); // last layer, never displayed by the main phase
-    hairyCross.addComponent<Component::Physics>(100.2);
-
-    mEngine->addEntity("cross1", hairyCross);
-    hairyCross.get<Component::Sprite>()->polySprite->setSpriteByName("balls_crosshair");
-    hairyCross.get<Component::Sprite>()->polySprite->setSpriteStateByName("default", 0, false);
-
-    player1.get<Component::GamePhase>()->phaseRootEntity->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
+    
     //pivot.get<Component::Sprite>()->polySprite->addChild(hairyCross.get<Component::Sprite>()->polySprite.get());
-
+    createPlayer(*mEngine.get(), mAnimations, "runningChamp.sprites", 1);
+    createPlayer(*mEngine.get(), mAnimations, "runningChamp2.sprites", 2);
 
     //*** Victim ***//
-    aunteater::Entity &victim = *mEngine->addEntity(aunteater::Entity());
+    aunteater::Entity &victim = *mEngine->addEntity("target",aunteater::Entity());
     // Graphics
     victim.addComponent<Component::Sprite>(new Polycode::SpriteSet("sleeping_guy.sprites"));
     victim.get<Component::Sprite>()->polySprite->setSpriteByName("sleeping_guy");
@@ -244,7 +256,6 @@ Game::Game() :
                                                         aPlayer.get<Component::SelectedPhase>()->phase = Component::Phase::DIPPING;
                                                         aPlayer.get<Component::SelectedPhase>()->victim = &victim;
                                                     });
-    mEngine->addEntity("target", victim);
 
 
 
@@ -260,33 +271,6 @@ Game::Game() :
     rightBorder.addComponent<Component::Position>(X_ROOM, 0., LAYERS-1);
     rightBorder.addComponent<Component::Static>();
     mEngine->addEntity(rightBorder);
-
-
-
-	aunteater::Entity player2;
-
-	//*** Player Entity setup ***//
-	player2.addComponent<Component::ActionController>();
-	player2.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp2.sprites"));
-	player2.addComponent<Component::Position>(500, -50, 1);
-	player2.addComponent<Component::Displacement>();
-	player2.addComponent<Component::Extent>();
-	player2.addComponent<Component::Speed>();
-    player2.addComponent<Component::SelectedPhase>();
-
-    if (Polycode::CoreServices::getInstance()->getCore()->getInput()->getNumJoysticks() > 0)
-    {
-        player2.addComponent<Component::Controller>(Polycode::CoreServices::getInstance()->getCore()->getInput()->getJoystickInfoByIndex(0));
-    }
-	//player2.addComponent<Component::Keyboard>();
-	player2.addComponent<Component::AnimationList>("idle");
-	player2.addComponent<Component::Physics>();
-
-	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[0].get());
-	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[1].get());
-	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[2].get());
-	player2.get<Component::AnimationList>()->addAnimation(*mAnimations[3].get());
-	mEngine->addEntity("player2", player2);
 
 	//*** End Player ***//
 
@@ -309,7 +293,7 @@ Game::Game() :
 				camera.addComponent<Component::ClippedScene>(rowId, colId);
 			}
             
-            mEngine->addEntity(camera);
+            mEngine->addEntity("camera" + std::to_string(rowId),camera);
         }
     }
     //*** End Camera ***//
