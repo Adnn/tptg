@@ -19,7 +19,7 @@ namespace TeaParty { namespace Component {
 
 struct CallbackOnActor : public aunteater::Component
 {
-    typedef std::function<void(aunteater::Node &)> Function;
+    typedef std::function<void(aunteater::Entity &)> Function;
 
     CallbackOnActor(Function aCallback) :
             callback(aCallback)

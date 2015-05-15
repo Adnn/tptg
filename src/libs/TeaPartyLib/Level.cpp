@@ -26,8 +26,8 @@ void Level::makeWall(double aPosition, aunteater::Engine &aEngine)
 void Level::makePortal(double aPosition, double aOutputPosition, aunteater::Engine &aEngine)
 {
     aunteater::Entity doorPortal;
-    doorPortal.addComponent<Component::CallbackOnActor>([aOutputPosition](aunteater::Node &aActor)
-                                                        {aActor.get<Component::Position>().coords.x = aOutputPosition;});
+    doorPortal.addComponent<Component::CallbackOnActor>([aOutputPosition](aunteater::Entity &aActor)
+                                                        {aActor.get<Component::Position>()->coords.x = aOutputPosition;});
     doorPortal.addComponent<Component::TriggeringAction>(Component::Action::A);
     doorPortal.addComponent<Component::Position>(Vec2{aPosition, 0}, mCurrentZIndex);
     doorPortal.addComponent<Component::Extent>(PORTAL_EXTENT, PORTAL_EXTENT);
@@ -37,8 +37,8 @@ void Level::makePortal(double aPosition, double aOutputPosition, aunteater::Engi
 void Level::makePortalZ(double aPosition, int aInputZ, int aOutputZ, aunteater::Engine &aEngine)
 {
     aunteater::Entity doorPortal;
-    doorPortal.addComponent<Component::CallbackOnActor>([aOutputZ](aunteater::Node &aActor)
-                                                        {aActor.get<Component::Position>().z = aOutputZ;});
+    doorPortal.addComponent<Component::CallbackOnActor>([aOutputZ](aunteater::Entity &aActor)
+                                                        {aActor.get<Component::Position>()->z = aOutputZ;});
     doorPortal.addComponent<Component::TriggeringAction>(Component::Action::A);
     doorPortal.addComponent<Component::Position>(Vec2{aPosition, 0}, aInputZ);
     doorPortal.addComponent<Component::Extent>(PORTAL_EXTENT, PORTAL_EXTENT);

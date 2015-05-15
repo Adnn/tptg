@@ -17,7 +17,7 @@ void Trigger::addedToEngine(aunteater::Engine &aEngine)
 
 void Trigger::update(double time)
 {
-    for (aunteater::Node actor : *mActors)
+    for (aunteater::Node &actor : *mActors)
     {
         const CollisionBox actorLimits = getBounding(actor);
         for (aunteater::Node trigger : *mTriggers)
@@ -29,7 +29,8 @@ void Trigger::update(double time)
                 const auto &triggerSetOff = trigger.get<Component::TriggeringAction>().expected;
                 if(Component::statisfies(triggerSetOff, actorActions))
                 {
-                    trigger.get<Component::CallbackOnActor>().callback(actor);
+                    // Call the trigger on the Entity, not on the Node : the node is limited to the components present on a NodeActor
+                    trigger.get<Component::CallbackOnActor>().callback(*actor.getEntity());
                     break; // One portal a frame, or you're gonna have a baaaad time.
                 }
             }
