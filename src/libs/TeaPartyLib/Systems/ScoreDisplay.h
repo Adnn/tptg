@@ -11,6 +11,7 @@
 #include <aunteater/Node.h>
 
 #include <PolyScene.h>
+#include <PolySceneLabel.h>
 
 namespace TeaParty { namespace System {
 
@@ -25,6 +26,7 @@ public:
 public:
     aunteater::Nodes mScorers;
     std::unique_ptr<Polycode::Scene> mScene;
+    std::unique_ptr<Polycode::SceneLabel> mLabel;
 };
 
 }} //namespace TeaParty::System

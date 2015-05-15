@@ -12,6 +12,7 @@
 #include "../Components/PlayerReference.h"
 #include "../Components/PointsTarget.h"
 #include "../Components/Position.h"
+#include "../Components/Score.h"
 #include "../Components/Speed.h"
 #include "../Components/Sprite.h"
 
@@ -79,6 +80,7 @@ void PhaseController::update(double aTime)
                 pointCounter.removeComponent<PointsTarget>();
                 pointCounter.removeComponent<CallbackNoParam>();
                 assignedPlayer->addComponent<ActionController>();
+                assignedPlayer->get<Score>()->score += 1;
                 victim->removeComponent<CallbackOnActor>();
                 victim->addComponent<IWantToDie>(3.);
                 victim->get<Component::Sprite>()->polySprite->setSpriteStateByName("dying",0,false);

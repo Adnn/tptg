@@ -111,7 +111,6 @@ Game::Game() :
     STFU(PointVisualisation);
     STFU(PointCounter);
     STFU(PointsTrigger)
-    STFU(ScoreDisplay)
     STFU(Destruction);
     
     STFU(KeyboardController);
@@ -127,7 +126,7 @@ Game::Game() :
 
     //*** Player Entity setup ***//
     player1.addComponent<Component::Index>(1);
-    player1.addComponent<Component::Score>(1);
+    player1.addComponent<Component::Score>();
     player1.addComponent<Component::ActionController>();
     player1.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.sprites"));
     player1.addComponent<Component::Position>(150, -50);
@@ -314,6 +313,8 @@ Game::Game() :
         }
     }
     //*** End Camera ***//
+
+    STFU(ScoreDisplay) // Needs to display OVER the camera
 }
 
 Game::~Game()

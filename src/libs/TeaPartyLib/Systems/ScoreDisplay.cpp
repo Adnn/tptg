@@ -30,19 +30,25 @@ void ScoreDisplay::addedToEngine(aunteater::Engine &aEngine)
 }
 
 ScoreDisplay::ScoreDisplay() :
-        mScene(std::make_unique<Polycode::Scene>(1 /*Polycode::Scene::SCENE_2D*/))
+        mScene(std::make_unique<Polycode::Scene>(1 /*Polycode::Scene::SCENE_2D*/)),
+        mLabel(new Polycode::SceneLabel("", SCORE_SIZE, "sans"))
 {
-    auto label = new Polycode::SceneLabel("TEXXXXT", 1, "sans");
-    label->setColorInt(255, 100, 0, 255);
-    mScene->addEntity(label);
-    //mScene->addEntity(new Polycode::SceneImage("target.png"));
-    mScene->getActiveCamera()->setOrthoSize(640, 480);
+    auto rect = new Polycode::ScenePrimitive(Polycode::ScenePrimitive::TYPE_BOX, 450, 60, 0);
+    rect->setColor(0.2, 0.2, 0.3, 0.8);
+    mScene->addEntity(rect);
+
+    mLabel->setColorInt(255, 214, 0, 255);
+    mScene->addEntity(mLabel.get());
+
+    mScene->getActiveCamera()->setOrthoSize(1280, 1024);
 }
 
 void ScoreDisplay::update(double time)
 {
+    std::ostringstream oss;
     for (auto &scorer : *mScorers)
     {
-
+        oss << "P" << scorer.get<Index>().index << ": " << scorer.get<Score>().score << "    ";
     }
+    mLabel->setText(oss.str());
 }

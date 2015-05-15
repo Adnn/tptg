@@ -1,6 +1,6 @@
 // Windows resolution
-#define X_RES 650.
-#define Y_RES (365.*2)
+#define X_RES 960.
+#define Y_RES (400.*2)
 
 // Size of a base room, i.e. filling exactly one viewport's, without ever scrolling.
 #define Y_ROOM (540/2.)
@@ -22,3 +22,5 @@
 #define MAX_POINT 1000.0
 #define PERFECT_TIME 1.
 #define DEAD_ZONE 10.
+
+#define SCORE_SIZE 58.

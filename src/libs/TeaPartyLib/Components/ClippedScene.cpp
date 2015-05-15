@@ -23,6 +23,4 @@ ClippedScene::ClippedScene(int row, int column) :
         double lowerBoundY = Y_ROOM/2 * (VP_ROWS-1);
         polyScene->rootEntity.setPositionX(lowerBoundX + column*X_ROOM);
         polyScene->rootEntity.setPositionY(lowerBoundY - row*Y_ROOM);
-
-        polyScene->enabled = false;
 }
