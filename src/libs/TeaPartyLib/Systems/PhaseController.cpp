@@ -8,15 +8,17 @@
 #include "../Components/CallbackNoParam.h"
 #include "../Components/GamePhase.h"
 #include "../Components/Index.h"
+#include "../Components/IWantToDie.h"
 #include "../Components/PlayerReference.h"
 #include "../Components/PointsTarget.h"
 #include "../Components/Position.h"
 #include "../Components/Speed.h"
+#include "../Components/Sprite.h"
 
 #include "../globals.h"
 
 #include <aunteater/Engine.h>
-
+#include <sstream>
 
 using namespace TeaParty;
 using namespace Archetype;
@@ -78,6 +80,8 @@ void PhaseController::update(double aTime)
                 pointCounter.removeComponent<CallbackNoParam>();
                 assignedPlayer->addComponent<ActionController>();
                 victim->removeComponent<CallbackOnActor>();
+                victim->addComponent<IWantToDie>(3.);
+                victim->get<Component::Sprite>()->polySprite->setSpriteStateByName("dying",0,false);
             });
         }
 

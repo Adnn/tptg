@@ -49,7 +49,9 @@ void ImageObserver::addedNode(aunteater::Node &aNode)
 
 void ImageObserver::removedNode(aunteater::Node &aNode)
 {
-    /// \todo
+    auto sceneElem = aNode.get<Component::Image>().polyImage;
+    auto zIndex = aNode.get<Component::Position>().z;
+    mSimulationRoot->getChildAtIndex(zIndex)->removeChild(sceneElem.get());
 }
 
 //void CameraObserver::addedNode(aunteater::Node &aNode)
@@ -132,5 +134,7 @@ void Display::addedNode(aunteater::Node &aNode)
 
 void Display::removedNode(aunteater::Node &aNode)
 {
-    /// \todo
+    auto sceneElem = aNode.get<Component::Sprite>().polySprite;
+    auto zIndex = aNode.get<Component::Position>().z;
+    mSimulationRoot.getChildAtIndex(zIndex)->removeChild(sceneElem.get());
 }
