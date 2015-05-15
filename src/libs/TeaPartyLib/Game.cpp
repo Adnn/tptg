@@ -88,6 +88,7 @@ Game::Game() :
     mEngine(new aunteater::Engine)
 {
     Polycode::CoreServices::getInstance()->getResourceManager()->addArchive(gResourcesRoot+"/Archive.zip");
+    Polycode::CoreServices::getInstance()->getFontManager()->registerFont("sans", "sans.ttf");
 
     std::istringstream defStream(gLevelDefinition);
     mLevel = std::make_unique<Level>(defStream, *mEngine);

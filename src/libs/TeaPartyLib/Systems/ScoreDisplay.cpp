@@ -32,7 +32,7 @@ void ScoreDisplay::addedToEngine(aunteater::Engine &aEngine)
 ScoreDisplay::ScoreDisplay() :
         mScene(std::make_unique<Polycode::Scene>(1 /*Polycode::Scene::SCENE_2D*/))
 {
-    auto label = new Polycode::SceneLabel("TEXXXXT", 1, "sans.ttf");
+    auto label = new Polycode::SceneLabel("TEXXXXT", 1, "sans");
     label->setColorInt(255, 100, 0, 255);
     mScene->addEntity(label);
     //mScene->addEntity(new Polycode::SceneImage("target.png"));
