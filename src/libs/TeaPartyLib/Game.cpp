@@ -61,17 +61,19 @@ using namespace TeaParty;
     mSystems.push_back(std::make_unique<System:: systemType>(arg_1)); \
     mEngine->addSystem(mSystems.back().get());
 
-    const std::string gLevelDefinition = R"#(
-        room_red.png
+const std::string gLevelDefinition = R"#(
+		room_double_mandala_alt.png
+        room_green_small.png
         room_brown.png
         room_double_mandala.png
-        room_green.png
+        room_mandala_small.png
         ZUP
-        room_green.png
+        room_mandala_small.png
+        room_green_small.png
+        room_green_small_alt.png
+        room_mandala_small.png
         room_brown.png
-        room_brown.png
-        room_brown.png
-        room_red.png
+		room_double_mandala_alt.png
     )#";
 
 
@@ -114,7 +116,7 @@ Game::Game() :
 
     //*** Player Entity setup ***//
     player1.addComponent<Component::ActionController>();
-    player1.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.xml"));
+    player1.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.sprites"));
     player1.addComponent<Component::Position>(150, -50);
     player1.addComponent<Component::Displacement>();
     player1.addComponent<Component::Extent>();
@@ -239,7 +241,7 @@ Game::Game() :
 
 	//*** Player Entity setup ***//
 	player2.addComponent<Component::ActionController>();
-	player2.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp.xml"));
+	player2.addComponent<Component::Sprite>(new Polycode::SpriteSet("runningChamp2.sprites"));
 	player2.addComponent<Component::Position>(500, -50, 1);
 	player2.addComponent<Component::Displacement>();
 	player2.addComponent<Component::Extent>();
@@ -272,8 +274,8 @@ Game::Game() :
             camera.addComponent<Component::SelectedPhase>();
 			if (rowId % 2 == 0)
 			{
-                camera.get<Component::SelectedPhase>()->phase = Component::Phase::DIPPING;
-				camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player1"));
+/*                camera.get<Component::SelectedPhase>()->phase = Component::Phase::DIPPING;
+*/				camera.addComponent<Component::PlayerReference>(mEngine->getEntity("player1"));
 				camera.addComponent<Component::ClippedScene>(rowId, colId);
 			}
 			else 

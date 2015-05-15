@@ -41,7 +41,7 @@ void PendulumPhysics::update(double aTime)
 {
     for (aunteater::Node &pendulum : *mPendulums)
     {
-        constexpr double frameTime = 1/60.;
+        const double frameTime = 1/60.;
 
         aunteater::weak_entity pivot = pendulum.get<Component::PivotReference>().entity;
         double horizontalSpeed = pivot->get<Component::Speed>()->vX;
