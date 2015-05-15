@@ -25,8 +25,8 @@ const ArchetypeTypeSet NodeHudRenderable::gComponentTypes = {
 };
 
 HudDisplay::HudDisplay() :
-    mScene(Polycode::Scene::SCENE_2D),
-    mInventory()
+    mInventory(),
+    mScene(Polycode::Scene::SCENE_2D)
 {
     mScene.getActiveCamera()->setProjectionMode(Polycode::Camera::ORTHO_SIZE_LOCK_WIDTH);
     mScene.getActiveCamera()->setOrthoSize(CAM_WIDTH, 540);

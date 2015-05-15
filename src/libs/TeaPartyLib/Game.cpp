@@ -204,7 +204,7 @@ Game::Game() :
 	point.get<Component::Sprite>()->polySprite->setScale(3, 3);
     player1.get<Component::GamePhase>()->phaseRootEntity->addChild(point.get<Component::Sprite>()->polySprite.get());
 
-    player1.addComponent<Component::Index>(1, mEngine->getEntity("pointCounter1"));
+    mEngine->getEntity("player1")->addComponent<Component::Index>(1, mEngine->getEntity("pointCounter1"));
 
     //*** Crosshair ***//
     aunteater::Entity hairyCross;

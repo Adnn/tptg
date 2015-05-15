@@ -53,7 +53,7 @@ void PendulumPhysics::update(double aTime)
         double & theta = pendulum.get<Component::Pendular>().theta;
         double L = pendulum.get<Component::Pendular>().length;
         double b = pendulum.get<Component::Pendular>().damping;
-        double m = pendulum.get<Component::Physics>().mass;
+        //double m = pendulum.get<Component::Physics>().mass;
 
         double thetaAccel = -std::cos(theta)/L*horizontalAccel - b/*/(m*std::pow(L, 2))*/ * thetaSpeed - 9.8/L * std::sin(theta);
 

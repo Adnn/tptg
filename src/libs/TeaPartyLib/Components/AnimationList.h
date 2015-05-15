@@ -12,8 +12,8 @@ class AnimationList : public aunteater::Component
 {
 public:
 	AnimationList(std::string aDefaultAnim) :
-		mCounterToCancelability(0),
-		mAnimationToPlay(aDefaultAnim)
+		mAnimationToPlay(aDefaultAnim),
+		mCounterToCancelability(0)
 	{}
 
 	void addAnimation(TeaParty::Structure::Animation &aAnimation)
