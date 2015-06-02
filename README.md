@@ -42,8 +42,8 @@ Notes :
 
 - Download the latest Boost libraries [http://www.boost.org/](http://www.boost.org/)
 - Unzip it somewhere on your filesystem
-- Using CMake-gui, set the source code folder to your anteater folder, the build folder to a /build subfolder in your anteater folder
-- Then, in CMake-gui add a new entry (Add Entry) called Boost\_INCLUDE\_DIR, or type "Filepath", pointing to the folder where you unzipped Boost (typically boost_1_58_0)
+- Using CMake-gui, set the source code folder to your anteater folder, the build folder to a `/build` subfolder in your anteater folder
+- Then, in CMake-gui add a new entry (Add Entry) called `Boost\_INCLUDE\_DIR`, or type "Filepath", pointing to the folder where you unzipped Boost (typically boost_1_58_0)
 - Click "Generate"
 
 **Build TPTG**
@@ -52,14 +52,14 @@ Open CMake-gui, set the source and build path.
 
 Example : 
 
-- source : "D:/Dev/Tea/tptg"
-- build : "D:/Dev/Tea/tptg/build"
+- source : `D:/Dev/Tea/tptg`
+- build : `D:/Dev/Tea/tptg/build`
 
 Then setup the following variables :
 
-- aunteater\_DIR : "{path\_to\_aunteater}/out/cmake"
-- Polycode\_CMAKE\_DIR : "{path\_to\_Polycode}/CMake"
-- Polycode\_INCLUDE\_DIR : "{path\_to\_Polycode}/Release/Windows/Framework/Core/include"
+- aunteater\_DIR : `{path\_to\_aunteater}/out/cmake`
+- Polycode\_CMAKE\_DIR : `{path\_to\_Polycode}/CMake`
+- Polycode\_INCLUDE\_DIR : `{path\_to\_Polycode}/Release/Windows/Framework/Core/include`
 
 Click Configure then Generate.
 You can now open the generated TeaParty.sln on your build folder.
