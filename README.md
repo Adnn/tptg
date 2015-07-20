@@ -1,5 +1,7 @@
 # TeaParty : A tale of two balls #
 
+[![Join the chat at https://gitter.im/Adnn/tptg](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Adnn/tptg?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 ##Dependencies##
 * [aunteater](https://github.com/Adnn/aunteater)
 * [Polycode](https://github.com/ivansafrin/Polycode)
